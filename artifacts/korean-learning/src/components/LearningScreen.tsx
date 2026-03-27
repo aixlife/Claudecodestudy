@@ -30,18 +30,21 @@ export default function LearningScreen() {
   const step = steps.find((s) => s.id === currentStep);
   const progressPercent = (completedSteps.length / TOTAL_STEPS) * 100;
 
-  const handleComplete = () => {
+  const handleComplete = (immediate = false) => {
+    const wasAlreadyDone = completedSteps.includes(currentStep);
     completeStep(currentStep);
     const next = getNextStep(currentStep);
+    const delay = wasAlreadyDone || immediate ? 0 : 1200;
+    const completionDelay = wasAlreadyDone || immediate ? 0 : 1500;
     if (next) {
       setTimeout(() => {
         setCurrentStep(next.id);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 1200);
+      }, delay);
     } else {
       setTimeout(() => {
         goToScreen('completion');
-      }, 1500);
+      }, completionDelay);
     }
   };
 

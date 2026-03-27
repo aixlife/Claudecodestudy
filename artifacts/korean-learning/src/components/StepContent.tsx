@@ -98,6 +98,10 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
   }, [isCompleted]);
 
   const handleComplete = () => {
+    if (isCompleted) {
+      onComplete();
+      return;
+    }
     setShowConfetti(true);
     setShowAha(true);
     setTimeout(() => setShowConfetti(false), 1400);
@@ -405,20 +409,20 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
           <div className="flex gap-3 flex-wrap">
             <button
               onClick={handleComplete}
-              disabled={isCompleted}
               className="flex-1 py-3 rounded-full font-semibold text-white transition-all duration-150"
               style={{
                 background: isCompleted ? '#2D7D52' : '#D97757',
                 fontSize: 14,
-                cursor: isCompleted ? 'default' : 'pointer',
+                cursor: 'pointer',
                 minWidth: 180,
-                boxShadow: isCompleted ? 'none' : '0 4px 12px rgba(217,119,87,0.25)',
+                boxShadow: isCompleted ? '0 4px 12px rgba(45,125,82,0.25)' : '0 4px 12px rgba(217,119,87,0.25)',
+                fontFamily: 'inherit',
               }}
               onMouseEnter={(e) => {
-                if (!isCompleted) e.currentTarget.style.background = '#B85C35';
+                e.currentTarget.style.background = isCompleted ? '#1e5c3a' : '#B85C35';
               }}
               onMouseLeave={(e) => {
-                if (!isCompleted) e.currentTarget.style.background = '#D97757';
+                e.currentTarget.style.background = isCompleted ? '#2D7D52' : '#D97757';
               }}
             >
               {isCompleted ? '✅ 완료! 다음으로 →' : '✅ 해봤어요! 다음으로 →'}
