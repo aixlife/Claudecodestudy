@@ -114,18 +114,26 @@ export default function LearningScreen() {
           </div>
           <div className="flex items-center gap-2">
             <a
-              href={`${import.meta.env.BASE_URL}community`}
+              href="https://open.kakao.com/o/gT0uVxJh"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-150 hidden sm:flex"
               style={{
-                border: '1.5px solid #D97757',
-                color: '#D97757',
+                background: '#FEE500',
+                color: '#3C1E1E',
                 fontSize: 13,
                 fontWeight: 600,
                 textDecoration: 'none',
-                background: '#FCEEE7',
+                border: '1.5px solid #F5DC00',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#F5DC00';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#FEE500';
               }}
             >
-              💬 커뮤니티
+              💬 질문하기 (카톡)
             </a>
             <a
               href="https://claude.ai"
