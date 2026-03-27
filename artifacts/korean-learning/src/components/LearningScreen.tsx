@@ -112,31 +112,47 @@ export default function LearningScreen() {
               {step.title}
             </span>
           </div>
-          <a
-            href="https://claude.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-150"
-            style={{
-              border: '1.5px solid #D4C9BB',
-              color: '#6B6560',
-              fontSize: 13,
-              fontWeight: 500,
-              textDecoration: 'none',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = '#D97757';
-              e.currentTarget.style.color = '#D97757';
-              e.currentTarget.style.background = '#FCEEE7';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = '#D4C9BB';
-              e.currentTarget.style.color = '#6B6560';
-              e.currentTarget.style.background = 'transparent';
-            }}
-          >
-            Claude 앱 열기 ↗
-          </a>
+          <div className="flex items-center gap-2">
+            <a
+              href={`${import.meta.env.BASE_URL}community`}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-150 hidden sm:flex"
+              style={{
+                border: '1.5px solid #D97757',
+                color: '#D97757',
+                fontSize: 13,
+                fontWeight: 600,
+                textDecoration: 'none',
+                background: '#FCEEE7',
+              }}
+            >
+              💬 커뮤니티
+            </a>
+            <a
+              href="https://claude.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-150"
+              style={{
+                border: '1.5px solid #D4C9BB',
+                color: '#6B6560',
+                fontSize: 13,
+                fontWeight: 500,
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#D97757';
+                e.currentTarget.style.color = '#D97757';
+                e.currentTarget.style.background = '#FCEEE7';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#D4C9BB';
+                e.currentTarget.style.color = '#6B6560';
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              Claude 앱 열기 ↗
+            </a>
+          </div>
         </div>
 
         {/* Mobile progress bar */}

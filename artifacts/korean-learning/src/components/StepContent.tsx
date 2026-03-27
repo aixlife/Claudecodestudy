@@ -253,11 +253,6 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
           </div>
         )}
 
-        {/* Keywords section */}
-        {step.keywords && step.keywords.length > 0 && (
-          <KeywordsSection keywords={step.keywords} />
-        )}
-
         {/* Install guide */}
         {step.installGuide && (
           <div

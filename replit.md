@@ -92,6 +92,29 @@ Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used b
 
 Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
 
+### `artifacts/korean-learning` (`@workspace/korean-learning`)
+
+React + Vite interactive Korean learning web app "Claude Code 마스터 클래스" with 20 steps across 3 chapters. Features:
+- 20-step curriculum (Chapters 1–3) with quizzes, keyword tooltips (analogy-based Korean metaphors), and progress tracking via localStorage
+- Community platform: `/community` routes powered by Replit Auth (OIDC/PKCE) + Express API + PostgreSQL
+- Community pages: Home, Discussion/Notice/Tools/Q&A boards, Members list, Assignment submission
+- Auth: login/logout via `useAuth` hook calling `/api/auth/user`, login button in every community page
+- Progress sync: `api.syncProgress()` syncs localStorage completedSteps to DB on assignment page
+- Verified badge: users who submit assignment + get approved → `isVerified = true` in `userProgressTable`
+
+### `lib/replit-auth-web` (`@workspace/replit-auth-web`)
+
+Client-side auth helpers for Replit OIDC. Provides `useAuth` hook patterns.
+
 ### `scripts` (`@workspace/scripts`)
 
 Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.
+
+## Community Platform Architecture
+
+- **Auth**: Replit OIDC/PKCE via `artifacts/api-server/src/routes/auth.ts` + `authMiddleware`
+- **DB Schema**: `lib/db/src/schema/community.ts` — postsTable, commentsTable, postLikesTable, assignmentsTable, userProgressTable
+- **API Routes**: `artifacts/api-server/src/routes/community.ts` — /community/members, /community/posts/:boardType, likes, comments, assignments, progress sync
+- **Frontend**: `artifacts/korean-learning/src/pages/community/` — CommunityLayout, CommunityHome, CommunityBoard, CommunityMembers, CommunitySubmit
+- **Board types**: "notice" | "tools" | "qa" | "discussion"
+- **Design**: Claude orange #D97757, warm cream #FAF9F6, Pretendard Korean font
