@@ -1,0 +1,249 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 40 33% 97%;
+  --foreground: 25 18% 9%;
+  --border: 33 30% 90%;
+  --input: 33 30% 90%;
+  --ring: 20 65% 59%;
+  --card: 0 0% 100%;
+  --card-foreground: 25 18% 9%;
+  --primary: 20 65% 59%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 33 28% 94%;
+  --secondary-foreground: 25 18% 9%;
+  --muted: 33 28% 94%;
+  --muted-foreground: 25 8% 52%;
+  --accent: 20 65% 59%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --app-font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --app-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border box-border;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}
+
+@layer utilities {
+  .claude-orange { color: #D97757; }
+  .claude-orange-bg { background-color: #D97757; }
+  .claude-orange-light { background-color: #FCEEE7; }
+  .claude-orange-dark { color: #B85C35; }
+  .claude-text-primary { color: #1A1714; }
+  .claude-text-secondary { color: #6B6560; }
+  .claude-text-muted { color: #9D9087; }
+  .claude-border { border-color: #E8E0D6; }
+  .claude-border-strong { border-color: #D4C9BB; }
+  .claude-bg-base { background-color: #FAF9F6; }
+  .claude-bg-surface { background-color: #FFFFFF; }
+  .claude-bg-subtle { background-color: #F5F0EB; }
+  .claude-success { color: #2D7D52; }
+  .claude-success-bg { background-color: #E8F5EE; }
+}
+
+/* Animations */
+@keyframes confetti-fall {
+  0% { transform: translateY(-10px) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-60px) rotate(360deg) scale(0); opacity: 0; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-in-explanation {
+  from { transform: translateY(-6px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes draw-line {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes node-complete {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+@keyframes sparkle {
+  0% { transform: scale(0) rotate(0deg); opacity: 1; }
+  100% { transform: scale(1.5) rotate(180deg); opacity: 0; }
+}
+
+@keyframes progress-fill {
+  from { width: var(--from-width, 0%); }
+  to { width: var(--to-width, 100%); }
+}
+
+.confetti-particle {
+  animation: confetti-fall 1.2s ease-out forwards;
+}
+
+.slide-up {
+  animation: slide-up 0.3s ease forwards;
+}
+
+.explanation-slide {
+  animation: slide-in-explanation 0.25s ease forwards;
+}
+
+.pulse-ring-animation::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #FCEEE7;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+.node-complete-animation {
+  animation: node-complete 0.4s ease;
+}
+
+/* Code block styling */
+.code-block {
+  background: #1C1917;
+  color: #E8E0D6;
+  font-family: var(--app-font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Progress bar at top */
+.progress-bar-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #E8E0D6;
+  z-index: 100;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #D97757;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D4C9BB; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #B85C35; }
+
+/* Journey map connecting lines */
+.journey-line {
+  width: 2px;
+  margin: 0 auto;
+  flex: 1;
+  min-height: 16px;
+}
+
+.journey-line-complete { background: #D97757; }
+.journey-line-dashed { 
+  background: repeating-linear-gradient(
+    to bottom,
+    #E8E0D6 0px,
+    #E8E0D6 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+/* Step option cards */
+.option-card {
+  border: 1.5px solid #E8E0D6;
+  border-radius: 12px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.option-card:hover {
+  border-color: #D97757;
+  background: #FCEEE7;
+}
+
+.option-card.selected-correct {
+  border: 2px solid #2D7D52;
+  background: #E8F5EE;
+}
+
+.option-card.selected-correct::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #2D7D52;
+  border-radius: 12px 0 0 12px;
+}
+
+.option-card.selected-incorrect {
+  border: 2px dashed #D97757;
+  background: #FCEEE7;
+}
+
+.option-card.selected-other {
+  border: 1.5px solid #E8E0D6;
+  background: #FAF9F6;
+  opacity: 0.7;
+}

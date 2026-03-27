@@ -1,0 +1,777 @@
+Build a complete Korean interactive learning web app from scratch.
+App name: "Claude Code 마스터 클래스"
+
+==============================================
+TECH STACK
+==============================================
+- React 18 + Vite
+- Tailwind CSS
+- localStorage (no backend needed)
+- Font: Pretendard
+  CDN: https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css
+
+==============================================
+DESIGN SYSTEM — Claude Official Style
+==============================================
+Mirror Anthropic Claude's official UI aesthetic:
+
+Colors:
+  --bg-base:       #FAF9F6   (warm cream background)
+  --bg-surface:    #FFFFFF   (card background)
+  --bg-subtle:     #F5F0EB   (subtle warm tint)
+  --bg-hover:      #F0EAE2   (hover state)
+  --accent:        #D97757   (Claude orange)
+  --accent-light:  #FCEEE7   (light orange tint)
+  --accent-dark:   #B85C35   (dark orange)
+  --text-primary:  #1A1714   (warm near-black)
+  --text-secondary:#6B6560   (warm gray)
+  --text-muted:    #9D9087   (muted warm gray)
+  --border:        #E8E0D6   (warm border)
+  --border-strong: #D4C9BB   (stronger border)
+  --success:       #2D7D52   (green)
+  --success-light: #E8F5EE   (light green)
+
+Typography:
+  font-family: 'Pretendard', -apple-system, sans-serif
+  heading-xl:  32px / font-weight 700 / line-height 1.2
+  heading-lg:  24px / font-weight 600 / line-height 1.3
+  heading-md:  18px / font-weight 600 / line-height 1.4
+  body:        15px / font-weight 400 / line-height 1.6
+  small:       13px / font-weight 400 / line-height 1.5
+  mono:        'JetBrains Mono', 'Fira Code', monospace / 13px
+
+Shadows:
+  card:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)
+  hover:  0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.05)
+  modal:  0 20px 60px rgba(0,0,0,0.15)
+
+Border radius:
+  sm: 8px / md: 12px / lg: 16px / xl: 20px / pill: 9999px
+
+Components:
+  Button primary:
+    bg #D97757, text white, rounded-pill, px-6 py-2.5
+    hover: bg #B85C35, shadow-hover
+    transition: all 0.15s ease
+
+  Button ghost:
+    border 1.5px #D4C9BB, text #6B6560, rounded-pill
+    hover: border #D97757, text #D97757, bg #FCEEE7
+
+  Card:
+    bg white, border 1px #E8E0D6, radius-lg, shadow-card
+    padding: 24px
+    hover: shadow-hover, border-color #D4C9BB
+
+  Code block:
+    bg #1C1917, text #E8E0D6, radius-md, padding 20px
+    mono font, font-size 13px, line-height 1.7
+    top-right: copy button (ghost style, small)
+
+  Tag/Badge pill:
+    bg #F5F0EB, text #6B6560, radius-pill, px-3 py-1, font-size 12px
+    accent variant: bg #FCEEE7, text #D97757
+
+  Think First option card:
+    border 1.5px #E8E0D6, radius-md, padding 14px 18px
+    hover: border #D97757, bg #FCEEE7
+    selected: border #D97757 2px, bg #FCEEE7, left-accent-bar
+
+  Progress bar:
+    height 3px, bg #E8E0D6, fill #D97757, radius-pill
+    position: fixed top-0 left-0 right-0, z-index 50
+
+  Journey node (completed): 
+    36px circle, bg #D97757, white checkmark icon
+  Journey node (current):
+    36px circle, white bg, border 2px #D97757
+    pulse animation: ring expands and fades in #FCEEE7
+  Journey node (locked):
+    36px circle, bg #F5F0EB, icon #9D9087 lock
+
+==============================================
+APP ARCHITECTURE
+==============================================
+
+State management (localStorage keys):
+  - dreamProject: string
+  - currentChapter: 1|2|3
+  - currentStep: "1-1" to "3-6"
+  - completedSteps: array of step IDs
+  - startTime: timestamp
+  - sessionMinutes: number
+
+Screens:
+  1. ONBOARDING
+  2. MAIN LEARNING (sidebar + content area)
+  3. COMPLETION
+
+==============================================
+SCREEN 1: ONBOARDING
+==============================================
+Full screen, centered layout, max-width 560px
+
+Header (top-left):
+  Small Claude logo placeholder (orange circle 32px + "Claude Code 마스터클래스" text)
+
+Main content:
+  Top label (small, #D97757): "AI 에이전틱 엔지니어링"
+  Heading: "나만의 AI 직원팀을 만들어보세요"
+  Subtext (#6B6560):
+    "입문부터 고급까지 — 클로드 코드의 진짜 힘을 경험합니다.
+     이 여정을 마치면, 코드를 짜는 사람이 아니라
+     AI 에이전트를 설계하는 사람이 됩니다."
+
+Dream project input section:
+  Label: "먼저, 무엇을 만들어보고 싶으세요?"
+  Large textarea (3 rows):
+    placeholder: "예) 고객 응대 자동화 봇, AI 콘텐츠 제작 시스템, 나만의 업무 도우미..."
+    border: 1.5px #E8E0D6, focus: border #D97757, radius-lg
+  Helper text below: "구체적일수록 마지막 단계에서 더 정확한 프롬프트가 만들어져요"
+
+Chapter preview cards (3 horizontal cards):
+  Chapter 1 card: 🌱 입문편 / "설치부터 핵심 명령어까지" / "6단계"
+  Chapter 2 card: ⚡ 실전편 / "컨텍스트 관리와 워크플로우" / "8단계"  
+  Chapter 3 card: 🚀 고급편 / "Skills · Agents · 자동화" / "6단계"
+  Style: small cards, horizontal layout, icon + text, warm border
+
+CTA button: "여정 시작하기 →" (primary, full width, large)
+
+Bottom note: "총 20단계 · 예상 소요 시간 약 2-3시간 · 클로드 앱 필요"
+
+==============================================
+SCREEN 2: MAIN LEARNING
+==============================================
+Layout: sidebar (280px fixed left) + main content area (flex-1)
+Background: #FAF9F6
+
+--- LEFT SIDEBAR ---
+
+Top section:
+  Dream project box:
+    bg #FCEEE7, border-left 3px #D97757, radius-md, p-4
+    Label (12px, #D97757): "나의 목표"
+    Text (14px, bold, #1A1714): [dreamProject truncated 30 chars]
+
+  Progress summary:
+    "20단계 중 N단계 완료" (small, #6B6560)
+    Progress bar (thin, orange fill)
+    "오늘 OO분 학습 중 ⏱" (small, #9D9087)
+
+Journey Map (scrollable):
+  3 Chapter sections:
+
+  Chapter 1 section:
+    Chapter header: 
+      Chapter number badge (#F5F0EB bg, small)
+      "1편 · 입문편" (14px, semibold)
+      Completion ratio "0/6" → updates live
+    
+    Sub-steps list (6 items, collapsible - expanded when active):
+      Each sub-step row:
+        Journey node (left, 36px)
+        Connecting line between nodes (dashed when locked, solid orange when complete)
+        Step label (13px): "1-1. 루트 디렉토리 시작" etc.
+        Estimated time (11px, muted): "약 3분"
+        "지금 여기 👈" label next to current node (animated)
+
+  Chapter 2 section: same structure, 8 sub-steps
+  Chapter 3 section: same structure, 6 sub-steps
+  
+  Final star node at bottom:
+    Gold star icon, "꿈 프로젝트 완성" label
+    Glows fully when all 20 steps done
+
+--- MAIN CONTENT AREA ---
+
+Top bar (sticky):
+  Left: Chapter badge pill + Step title
+  Right: "Claude 앱 열기 ↗" ghost button
+
+Step card (max-width 720px, centered, p-8):
+
+  SECTION A — Step header:
+    Row: [Step number badge] [Difficulty tag: 🟢기초/🟡실전/🔴고급] [Chapter tag: 1편/2편/3편] [Time: "약 5분"]
+    Title (heading-lg)
+    Description (body, #6B6560, 2-3 sentences)
+
+  SECTION B — Insight box (when applicable):
+    bg #FCEEE7, border-left 3px #D97757, radius-md, p-4
+    Label (11px uppercase, #D97757, letter-spacing): "핵심 포인트"
+    Content (14px, #1A1714)
+
+  SECTION C — Think First (interactive):
+    Card header: "잠깐, 먼저 생각해볼까요? 🤔" (14px, semibold)
+    Question text (15px)
+    3 option cards (clickable):
+      Before selection: border #E8E0D6
+      Hover: border #D97757, bg #FCEEE7
+      After selection — correct: border #2D7D52, bg #E8F5EE, left bar green
+        Show: "✓ 맞아요!" badge + explanation slide-in
+      After selection — incorrect: border #D97757 dashed, bg #FCEEE7
+        Show: "한 번 더 생각해봐요 🙂" (no penalty, just feedback)
+
+  SECTION D — 실습 프롬프트 블록(s):
+    Section label: "📋 Claude 앱에서 해보세요"
+    
+    For steps with multiple prompts, show numbered sub-sections:
+    "1단계", "2단계" etc. as small labels above each block
+
+    Each code block:
+      Dark bg #1C1917, rounded-md, p-5
+      Line numbers optional
+      Copy button top-right (ghost, small): "복사" → "복사됨 ✓" (1.5s)
+    
+    Below each block:
+      Tip text (13px, #9D9087): contextual hint
+
+  SECTION E — Completion check:
+    Divider line
+    "Claude 앱에서 해보셨나요?" (15px, semibold)
+    Two buttons side by side:
+      Primary: "✅ 해봤어요! 다음으로 →"
+        → triggers: step complete animation + unlock next + journey map update
+      Ghost: "❓ 잘 모르겠어요"
+        → shows hint accordion (additional explanation + screenshot guide placeholder)
+    
+    On completion:
+      Small spark/confetti animation (CSS keyframes, lightweight)
+      Aha message card slides up:
+        bg #E8F5EE, border #2D7D52, radius-md, p-3
+        Insight message (step-specific, 1 sentence)
+
+==============================================
+ALL 20 STEPS CONTENT
+==============================================
+
+--- CHAPTER 1: 입문편 (6 steps) ---
+
+STEP 1-1: 루트 디렉토리에서 시작하기
+  Difficulty: 🟢기초 / Time: 약 3분
+  Desc: 클로드 코드는 실행 위치가 중요합니다. 루트 디렉토리가 아닌 곳에서 실행하면 프로젝트 구조를 잘못 읽어요.
+  Insight: "루트가 아닌 폴더에서 실행 시 — 다른 폴더 접근에 토큰 낭비, 비효율적 작동"
+  Think First Q: "클로드를 API 폴더 안에서 실행하면?"
+    Options: ["API 관련 파일만 읽을 수 있어요", "더 빠르게 작동해요", "자동으로 루트를 찾아요"]
+    Correct: 0
+    Explanation: "맞아요. 다른 폴더 접근에 토큰을 추가로 써야 해서 비효율적이에요."
+  
+  Install guide card first (before prompt):
+    Title: "먼저 Claude Code를 설치해요"
+    Steps:
+      1. claude.ai/download 방문 → [링크 버튼]
+      2. Mac / Windows 선택 후 설치
+      3. 앱 실행 후 Anthropic 계정 로그인
+      4. 터미널을 열고 프로젝트 폴더로 이동
+    
+  Code block:
+    cd ~/내프로젝트폴더
+    claude
+  
+  Tip: "폴더명을 모르겠으면 터미널에서 'ls' 입력 후 폴더 목록을 확인하세요"
+  Aha message: "이제 클로드가 프로젝트 전체를 한눈에 볼 수 있어요!"
+
+STEP 1-2: CLAUDE.md 만들기 (/init)
+  Difficulty: 🟢기초 / Time: 약 5분
+  Desc: /init 명령어 하나로 CLAUDE.md 파일이 생성됩니다. 이 파일은 클로드의 두뇌 — 매 세션마다 자동으로 읽어요.
+  Insight: "CLAUDE.md = 프로젝트의 모든 컨텍스트 / 300줄 이하 유지 원칙 (초과 시 토큰 낭비)"
+  Think First Q: "CLAUDE.md가 없으면 클로드는 어떻게 될까요?"
+    Options: ["매번 처음부터 프로젝트를 파악해야 해요", "더 창의적으로 일해요", "더 빠르게 실행돼요"]
+    Correct: 0
+    Explanation: "맞아요. CLAUDE.md가 없으면 매 세션마다 모든 파일을 다시 탐색해야 해요."
+  
+  Code block 1 (label: "1단계 — CLAUDE.md 생성"):
+    /init
+  
+  Code block 2 (label: "2단계 — 내용 추가"):
+    방금 만든 CLAUDE.md에 아래 내용을 추가해줘:
+    
+    # 절대 규칙
+    - 프로덕션 DB에 직접 쿼리 금지
+    - .env 파일 절대 커밋 금지
+    
+    # 프로젝트 구조
+    (현재 폴더 구조를 트리 형태로 작성)
+    
+    # 코딩 컨벤션
+    - 컴포넌트: PascalCase
+    - 유틸리티: camelCase
+  
+  Aha message: "CLAUDE.md가 있으면 매 세션마다 클로드가 즉시 맥락을 파악하고 시작해요!"
+
+STEP 1-3: Plan Mode 완전 정복
+  Difficulty: 🟢기초 / Time: 약 5분
+  Desc: Plan Mode는 클로드가 코드를 바로 짜는 대신 계획을 먼저 보여줘요. 검토 후 승인해야 실행됩니다.
+  Insight: "플랜 없이 바로 실행 = 엉뚱한 방향으로 코드 대량 생성 위험 / 토큰도 2~3배 낭비"
+  Think First Q: "Plan Mode에서 '테스트 작성해줘'를 입력하면?"
+    Options: ["바로 테스트 파일을 생성해요", "테스트 계획을 먼저 보여주고 승인을 기다려요", "에러가 나요"]
+    Correct: 1
+    Explanation: "맞아요. Plan Mode에서는 클로드가 write 권한이 없어서 계획만 세워 보여줘요."
+  
+  Code block 1 (label: "1단계 — Plan Mode 전환"):
+    키보드에서 Shift + Tab 눌러보기
+    → 화면 상단이 "Plan Mode"로 바뀌면 성공!
+  
+  Code block 2 (label: "2단계 — 첫 명령"):
+    간단한 할 일 앱을 만들어줘
+  
+  Code block 3 (label: "3단계 — 플랜 검토 후"):
+    이대로 진행해줘
+    (또는: 2번 단계를 먼저 하고 나머지를 진행해줘)
+  
+  Aha message: "플랜을 먼저 보고 승인하는 습관 — 이게 고수와 초보의 차이예요!"
+
+STEP 1-4: Escape & 되감기
+  Difficulty: 🟢기초 / Time: 약 3분
+  Desc: 클로드가 엉뚱한 방향으로 가고 있다면? Escape로 즉시 멈추세요. 두 번 누르면 이전 프롬프트로 되감기도 돼요.
+  Insight: "잘못된 가정 위에 쌓인 코드는 전부 쓸모없음 — 초반에 잡는 게 핵심"
+  Think First Q: "클로드의 Thinking Log를 무시하면?"
+    Options: ["시간이 절약돼요", "잘못된 가정을 못 잡아서 코드 전체가 틀어질 수 있어요", "아무 문제 없어요"]
+    Correct: 1
+    Explanation: "맞아요. 클로드가 세운 가정이 틀렸을 때 초반에 잡지 않으면 나중에 전부 다시 해야 해요."
+  
+  Code block (label: "실습 — 중단 연습"):
+    1. 아무 명령이나 입력 (예: 간단한 버튼 만들어줘)
+    2. 실행 중간에 Escape 한 번 → 중단 확인
+    3. Escape 한 번 더 → 이전 프롬프트로 되감기 확인
+  
+  Aha message: "Escape는 실수를 0원으로 되돌리는 마법 버튼이에요!"
+
+STEP 1-5: 이미지·스크린샷으로 소통하기
+  Difficulty: 🟢기초 / Time: 약 3분
+  Desc: UI 스타일을 말로 설명하면 토큰 낭비에 결과도 부정확해요. 원하는 디자인 이미지를 그대로 드래그앤드롭하세요.
+  Insight: "이미지 1장 = 설명 수백 단어와 동등 / 아키텍처 다이어그램도 Mermaid나 이미지로"
+  Think First Q: "UI 스타일을 전달하는 가장 효율적인 방법은?"
+    Options: ["상세하게 텍스트로 설명", "참고 이미지를 드래그앤드롭", "색상 코드만 알려줌"]
+    Correct: 1
+    Explanation: "맞아요. 이미지가 가장 정확하고 토큰 효율도 좋아요."
+  
+  Code block:
+    원하는 디자인 레퍼런스 이미지를 터미널에 드래그앤드롭 후:
+    
+    이 디자인 스타일을 참고해서
+    내 랜딩페이지 헤더를 만들어줘.
+    배경은 따뜻한 크림색으로 해줘.
+  
+  Aha message: "이미지 드래그앤드롭 — 이걸 아는 사람과 모르는 사람의 결과물이 달라요!"
+
+STEP 1-6: 필수 슬래시 명령어 + 커스텀 명령어
+  Difficulty: 🟡실전 / Time: 약 10분
+  Desc: 6가지 핵심 슬래시 명령어와 나만의 커스텀 명령어를 만들어봐요. 반복 작업을 한 번에 끝내는 비결이에요.
+  Insight: "컨텍스트 = 클로드의 단기 기억 / 꽉 차면 성능 급락 / 슬래시 명령어로 관리"
+  Think First Q: "/compact와 /clear의 차이는?"
+    Options: ["/compact는 요약을 유지하며 정리, /clear는 전부 삭제해요", "완전히 같아요", "/compact가 더 강력해요"]
+    Correct: 0
+    Explanation: "맞아요. compact는 이 세션의 핵심 기억은 남기고 공간만 확보해요."
+  
+  Show 6 separate mini code blocks in a 2-column grid:
+    Block 1: /context  → "현재 토큰 사용량 확인"
+    Block 2: /clear    → "컨텍스트 전체 초기화"
+    Block 3: /compact  → "요약 유지 + 공간 확보"
+    Block 4: /resume   → "이전 세션 복구"
+    Block 5: /mcp      → "연결된 도구 목록 확인"
+    Block 6: !git status → "클로드 안에서 bash 실행"
+  
+  Code block (label: "보너스 — 커스텀 슬래시 명령어 만들기"):
+    테스트를 실행하고, 모두 통과하면
+    git commit 후 git push까지 자동으로 해주는
+    커스텀 슬래시 명령어를 만들어줘.
+    이름은 /ship 으로 해줘.
+  
+  Aha message: "/ship 하나로 테스트→커밋→푸시가 자동으로 돼요. 이게 생산성의 차이예요!"
+
+--- CHAPTER 2: 실전편 (8 steps) ---
+
+STEP 2-1: Second Brain + /memory 시스템
+  Difficulty: 🟡실전 / Time: 약 5분
+  Desc: 클로드가 작업하면서 배운 패턴, 인사이트, 결정 이유를 자동으로 기억하게 만들 수 있어요.
+  Insight: "개인 학습 메모리 → /memory (자동 저장) / 팀 공유 지식 → CLAUDE.md (명시적 작성)"
+  Think First Q: "클로드에게 '기억해줘'라고 하면?"
+    Options: ["그냥 무시해요", "memory.md 파일에 자동 저장돼요", "다음 세션엔 잊어버려요"]
+    Correct: 1
+    Explanation: "맞아요. /memory 기능으로 클로드가 자동으로 패턴을 저장하고 다음 세션에 불러와요."
+  
+  Code block 1 (label: "1단계 — 기억 저장"):
+    오늘 작업에서 배운 패턴과
+    앞으로 이 프로젝트에서 지킬 규칙을
+    기억해줘.
+  
+  Code block 2 (label: "2단계 — 메모리 확인"):
+    /memory
+  
+  Aha message: "이제 클로드가 지난 세션을 기억하는 나만의 AI 동료가 돼요!"
+
+STEP 2-2: Lazy Loading 전략
+  Difficulty: 🟡실전 / Time: 약 7분
+  Desc: CLAUDE.md에 모든 정보를 몰아넣으면 매 세션마다 수천 토큰이 낭비돼요. 필요할 때만 불러오는 구조로 바꿔야 해요.
+  Insight: "나쁜 예: API 엔드포인트 50개를 CLAUDE.md에 직접 작성 / 좋은 예: CLAUDE.md에는 docs/api.md 참조만"
+  Think First Q: "CLAUDE.md에 API 엔드포인트 50개를 직접 작성하면?"
+    Options: ["클로드가 더 똑똑해져요", "매 세션마다 수천 토큰이 자동으로 낭비돼요", "빠르게 참조할 수 있어요"]
+    Correct: 1
+    Explanation: "맞아요. CLAUDE.md는 매 세션 시작 시 자동 로드돼요. 가벼울수록 효율적이에요."
+  
+  Code block:
+    내 CLAUDE.md를 Lazy Loading 구조로 리팩토링해줘.
+    API 스펙, DB 스키마, 상세 컨벤션은
+    별도 파일(docs/ 폴더)로 분리하고
+    CLAUDE.md에는 참조 경로만 남겨줘.
+  
+  Aha message: "CLAUDE.md는 목차, 상세 내용은 별도 파일 — 이게 컨텍스트 엔지니어링의 핵심이에요!"
+
+STEP 2-3: MCP 효율적 관리
+  Difficulty: 🟡실전 / Time: 약 5분
+  Desc: MCP를 많이 연결할수록 안 써도 컨텍스트가 쌓여요. Notion, Linear 같은 대형 MCP는 특히 주의해야 해요.
+  Insight: "MCP 서버 = 항상 컨텍스트 차지 / Notion MCP 하나가 수천 토큰 / 해결책: 필요한 기능만 커스텀 MCP 제작"
+  Think First Q: "MCP를 10개 연결해두면?"
+    Options: ["10개 도구 모두 언제든 쓸 수 있어서 좋아요", "안 쓰는 MCP도 컨텍스트를 차지해서 효율이 떨어져요", "응답이 빨라져요"]
+    Correct: 1
+    Explanation: "맞아요. MCP 서버는 연결만 해도 모든 도구 설명이 컨텍스트에 로드돼요."
+  
+  Code block 1 (label: "연결된 MCP 확인"):
+    /mcp
+  
+  Code block 2 (label: "지금 안 쓰는 MCP 비활성화"):
+    /mcp → 목록에서 지금 작업에 불필요한 MCP 옆 disable 클릭
+  
+  Aha message: "쓸 때만 켜고 안 쓸 때 끄는 습관 — 토큰이 눈에 띄게 절약돼요!"
+
+STEP 2-4: Mermaid 다이어그램으로 아키텍처 전달
+  Difficulty: 🟡실전 / Time: 약 5분
+  Desc: 프로젝트 구조를 글로 설명하면 길어지고 부정확해요. Mermaid 다이어그램으로 표현하면 클로드가 훨씬 빠르게 파악해요.
+  Insight: "Mermaid 다이어그램 = 클로드가 가장 효율적으로 파싱하는 아키텍처 표현 방식"
+  Think First Q: "아키텍처를 전달하는 가장 효율적인 방법은?"
+    Options: ["상세하게 텍스트로 설명", "Mermaid 다이어그램으로 표현", "구두로 설명"]
+    Correct: 1
+  
+  Code block:
+    내 프로젝트 전체 아키텍처를
+    Mermaid 다이어그램으로 만들어줘.
+    완성되면 docs/architecture.md에 저장하고
+    CLAUDE.md에 참조 경로를 추가해줘.
+  
+  Aha message: "아키텍처가 다이어그램으로 정리되면 클로드가 전체 구조를 즉시 파악해요!"
+
+STEP 2-5: 한 세션 = 한 기능 원칙
+  Difficulty: 🟡실전 / Time: 약 5분
+  Desc: 한 세션에서 여러 기능을 동시에 만들면 컨텍스트가 오염되고 품질이 급격히 떨어져요.
+  Insight: "'결제 시스템 전체 만들어줘' ❌ → 'Stripe 웹훅 핸들러만 구현해줘' ✅"
+  Think First Q: "한 세션에서 로그인, 결제, 대시보드를 동시에 만들면?"
+    Options: ["빠르고 효율적이에요", "컨텍스트 오염으로 품질이 급격히 저하돼요", "클로드가 잘 처리해줘요"]
+    Correct: 1
+    Explanation: "맞아요. 컨텍스트가 꽉 찰수록 클로드의 답변 품질이 천천히 나빠져요."
+  
+  Code block (label: "올바른 세션 워크플로우"):
+    1단계: Plan Mode에서 전체 기능 목록 설계
+    2단계: /clear (새 세션 시작)
+    3단계: 첫 번째 기능 하나만 구현
+    4단계: 완료 후 /clear → 다음 기능으로
+  
+  Aha message: "세션을 기능별로 나누는 순간 결과물 품질이 확 달라져요!"
+
+STEP 2-6: TDD 기반 스마트 코딩
+  Difficulty: 🟡실전 / Time: 약 7분
+  Desc: 작은 변경 후 테스트를 바로 작성하는 습관이 AI 코딩의 핵심이에요. 나중에 디버깅할 시간을 90% 줄여줘요.
+  Insight: "AI가 수백 줄을 바꿔도 내가 다 못 봄 → 테스트가 유일한 품질 안전망"
+  Think First Q: "테스트 없이 계속 기능을 추가하면?"
+    Options: ["빠르게 개발할 수 있어요", "나중에 어디서 문제가 생겼는지 찾기가 매우 어려워져요", "클로드가 알아서 체크해줘요"]
+    Correct: 1
+  
+  Code block 1 (label: "기능 구현 후 테스트 작성"):
+    방금 만든 [기능명] 함수에 대한
+    유닛 테스트를 작성해줘.
+    테스트가 모두 통과하면 commit해줘.
+  
+  Code block 2 (label: "에러 발생 시 — 로그 그대로 붙여넣기"):
+    [에러 로그 전체 복사 후 붙여넣기]
+    이 에러를 분석하고 수정해줘.
+  
+  Aha message: "에러 로그는 해석 없이 그대로 붙여넣기 — 클로드는 스택 트레이스 분석의 달인이에요!"
+
+STEP 2-7: todo.md 공유 워크플로우
+  Difficulty: 🟡실전 / Time: 약 5분
+  Desc: 오늘 할 일을 todo.md 파일로 클로드와 공유하면 여러 세션에 걸친 작업을 연속성 있게 이어갈 수 있어요.
+  Insight: "AI는 오늘 할 일, 내일 할 일을 모름 → todo.md를 함께 업데이트하며 공유"
+  Think First Q: "todo.md를 클로드와 공유하면?"
+    Options: ["별 의미 없어요", "클로드가 작업 순서를 알고 연속성 있게 일할 수 있어요", "느려져요"]
+    Correct: 1
+  
+  Code block 1 (label: "1단계 — todo.md 생성"):
+    오늘 해야 할 작업 목록을
+    todo.md 파일에 체크리스트로 만들어줘.
+  
+  Code block 2 (label: "2단계 — 작업 시작"):
+    todo.md 파일 읽고
+    첫 번째 항목부터 시작해줘.
+  
+  Code block 3 (label: "3단계 — 세션 종료 전"):
+    오늘 완료한 항목을 todo.md에 업데이트해줘.
+  
+  Aha message: "todo.md가 있으면 며칠에 걸친 프로젝트도 맥락을 잃지 않아요!"
+
+STEP 2-8: WAT 프레임워크
+  Difficulty: 🔴고급 / Time: 약 10분
+  Desc: Workflow → Agents → Tools 순서로 프로젝트를 설계하는 프레임워크예요. 복잡한 작업도 안정적으로 관리해줘요.
+  Insight: "W: 작업 흐름 먼저 글로 정의 / A: Agent에게 역할 분배 / T: 실행 도구 결합"
+  Think First Q: "WAT 프레임워크에서 가장 먼저 해야 할 것은?"
+    Options: ["도구(MCP, 스크립트) 선택", "Agent 역할 설정", "작업 흐름(Workflow)을 Plain English로 정의"]
+    Correct: 2
+    Explanation: "맞아요. 도구보다 흐름이 먼저예요. 흐름이 명확해야 Agent와 Tool이 결정돼요."
+  
+  Code block:
+    [내 프로젝트명]에 [기능] 추가하기를
+    WAT 프레임워크로 설계해줘.
+    
+    W: 단계별 작업 흐름을 Plain English로 정의
+    A: 각 단계를 담당할 Agent 역할과 범위 분배
+    T: 필요한 스크립트, MCP, Hooks 목록화
+    
+    각 단계마다 테스트 작성 및 통과 확인 포함.
+  
+  Aha message: "WAT로 설계된 프로젝트는 AI가 길을 잃지 않아요. 이게 진짜 에이전틱 엔지니어링이에요!"
+
+--- CHAPTER 3: 고급편 (6 steps) ---
+
+STEP 3-1: Skill이란 무엇인가
+  Difficulty: 🔴고급 / Time: 약 7분
+  Desc: Skill은 AI에게 주는 업무 매뉴얼이에요. 한 번 만들면 자동 트리거 되고, 항상 같은 품질의 결과물이 나와요.
+  Insight: "CLAUDE.md: 항상 로드 / MCP: 항상 로드 / Skill: 이름+설명만 평소 로드 → 20개 만들어도 부담 없음"
+  Think First Q: "같은 보고서를 매번 만들 때 최선의 방법은?"
+    Options: ["매번 긴 프롬프트를 복사 붙여넣기", "Skill로 만들어두고 트리거 한 번", "매번 새로 설명"]
+    Correct: 1
+    Explanation: "맞아요. Skill은 한 번 만들면 관련 말만 해도 자동으로 실행돼요."
+  
+  Show comparison visual card:
+    4-column mini comparison table:
+    항목 | 프롬프트 | CLAUDE.md | MCP | Skill
+    평소 컨텍스트 | 없음 | 항상 차지 | 항상 차지 | 거의 없음(50바이트)
+    재사용성 | 수동 복붙 | 자동 로드 | 자동 로드 | 자동 트리거
+    용도 | 일회성 | 핵심 규칙 | 외부 도구 | 반복 업무
+  
+  Aha message: "Skill이 있으면 반복 작업은 말 한마디로 끝나요!"
+
+STEP 3-2: Skill 만들기 (Skill Creator)
+  Difficulty: 🔴고급 / Time: 약 10분
+  Desc: Skill Creator 플러그인을 설치하면 스킬 만들기가 자동화돼요. 내 반복 업무를 직접 스킬로 만들어봐요.
+  Insight: "Description에 사용자가 실제로 말할 법한 표현 3개 이상 포함 → 자동 트리거 정확도 향상"
+  Think First Q: "Skill Description을 '문서를 생성하는 스킬'이라고만 쓰면?"
+    Options: ["명확해서 잘 작동해요", "너무 추상적이라 언제 실행할지 클로드가 판단 못 해요", "상관없어요"]
+    Correct: 1
+  
+  Code block 1 (label: "1단계 — Skill Creator 설치"):
+    /plugin
+    → marketplaces → skillCreator 검색 → install
+    → reload plugins
+  
+  Code block 2 (label: "2단계 — 나만의 스킬 생성"):
+    [내가 자주 하는 반복 작업] 자동화 스킬을 만들어줘.
+    
+    입력: [필요한 정보들]
+    출력: [원하는 결과물 형태]
+    항상 포함할 것: [체크리스트 항목들]
+    트리거 표현 예시: [실제로 말할 법한 표현 3개]
+  
+  Code block 3 (label: "3단계 — 스킬 테스트"):
+    [트리거 표현]해줘
+  
+  Aha message: "스킬은 처음부터 완벽할 필요 없어요. 쓰면서 갈고 닦는 나만의 자동화예요!"
+
+STEP 3-3: Subagent 만들기
+  Difficulty: 🔴고급 / Time: 약 10분
+  Desc: Subagent는 별도의 컨텍스트 공간을 가진 AI 직원이에요. 파일 100개를 뒤져도 메인 컨텍스트가 오염되지 않아요.
+  Insight: "Subagent 모델은 Sonnet 추천 — Opus를 쓰면 토큰이 눈에 띄게 빠르게 닳아요"
+  Think First Q: "테스트 작성 작업을 Subagent에게 맡기면?"
+    Options: ["메인 컨텍스트가 오염돼요", "별도 컨텍스트에서 처리되어 메인이 깨끗하게 유지돼요", "느려져요"]
+    Correct: 1
+    Explanation: "맞아요. Subagent는 자기만의 컨텍스트 공간에서 일하고 결과 요약만 돌려줘요."
+  
+  Code block:
+    /agents
+    → Create new agent
+    → Project level 선택
+    → Generate with Claude 선택
+    
+    입력 내용:
+    너는 [역할명] 전담 AI야.
+    내가 [작업]을 주면 [결과물]로 만들어줘.
+    완료 후 반드시 "완료 ✓"로 끝내줘.
+    
+    설정:
+    - 모델: Sonnet (권장)
+    - Memory: Enable (필수)
+    - 권한: 역할에 맞는 최소 권한
+  
+  Aha message: "첫 번째 AI 직원이 생겼어요! 이제 당신은 AI를 채용하는 사람이에요!"
+
+STEP 3-4: Agent Teams — AI 팀 꾸리기
+  Difficulty: 🔴고급 / Time: 약 10분
+  Desc: 여러 Subagent가 동시에 병렬로 일하는 Agent Teams를 경험해봐요. 10분 작업이 3~4분으로 줄어들어요.
+  Insight: "병렬 처리 가능한 것: 독립적인 작업들 / 병렬 처리 금지: 의존성이 있는 작업들"
+  Think First Q: "프론트엔드, 백엔드, 테스트 작성을 동시에 진행하려면?"
+    Options: ["불가능해요", "Agent Teams로 병렬 처리 가능해요", "순서대로 해야만 해요"]
+    Correct: 1
+    Explanation: "맞아요. 독립적인 작업들은 각각 다른 Agent에게 맡겨 동시에 처리할 수 있어요."
+  
+  Code block:
+    todo.md를 읽고
+    독립적으로 처리 가능한 작업들을
+    agent teams로 병렬 처리해줘.
+    
+    각 agent 완료 시 메인에 보고하고
+    전체 완료 후 결과 요약해줘.
+  
+  Aha message: "이제 당신은 AI 팀장이에요. 여러 AI가 동시에 일하는 걸 눈으로 봐요!"
+
+STEP 3-5: Hooks 자동화 파이프라인
+  Difficulty: 🔴고급 / Time: 약 7분
+  Desc: 특정 이벤트가 발생할 때 자동으로 실행되는 파이프라인을 만들어요. 커밋, 저장, 에러마다 자동 처리가 가능해요.
+  Insight: "Hooks = 조건 없이 자동 실행 트리거 / Skill과 함께 쓰면 완전 자동화 달성"
+  Think First Q: "git commit마다 테스트를 자동 실행하려면?"
+    Options: ["매번 수동으로 테스트해요", "Hook을 만들면 commit 시 자동 실행돼요", "불가능해요"]
+    Correct: 1
+  
+  Code block:
+    git commit 직전에 자동으로 테스트가
+    실행되는 Hook을 만들어줘.
+    
+    조건:
+    - 테스트 실패 시: commit 중단 + 실패 내용 출력
+    - 테스트 통과 시: commit 진행
+  
+  Aha message: "Hook이 있으면 실수로 깨진 코드를 커밋할 일이 없어요!"
+
+STEP 3-6: 통합 데모 — 나의 완성 워크플로우
+  Difficulty: 🔴고급 / Time: 약 15분
+  Desc: 지금까지 배운 모든 것을 하나의 워크플로우로 연결해요. 이걸 실행하는 순간 당신은 에이전틱 엔지니어가 됩니다.
+  
+  Show user's dream project prominently:
+    Orange accent box: "나의 목표: [dreamProject]"
+  
+  Insight: "이 단계를 마치면 — 코드를 짜는 사람이 아니라 AI 에이전트를 설계하는 사람이 됩니다"
+  
+  Think First Q: "진짜 1인 개발자의 풀 워크플로우는?"
+    Options: [
+      "혼자 모든 코드를 직접 작성",
+      "AI에게 시키고 기다리기",
+      "WAT 설계 → Skills + Agents 구성 → 병렬 실행 → 자동화"
+    ]
+    Correct: 2
+  
+  4 sequential code blocks:
+  
+  Code block 1 (label: "1단계 — 음성으로 계획 전달"):
+    /voice
+    (스페이스바를 누른 채 말하기)
+    "[내 꿈 프로젝트]의 오늘 작업을
+     todo.md로 정리하고 시작해줘"
+  
+  Code block 2 (label: "2단계 — WAT로 설계"):
+    todo.md 읽고 WAT 프레임워크로 설계해줘.
+    독립 작업은 agent teams로 병렬 처리.
+    각 단계마다 테스트 작성 포함.
+  
+  Code block 3 (label: "3단계 — 크로스 AI 리뷰"):
+    지금까지의 작업 계획을 export해줘.
+    (export된 내용을 ChatGPT나 Gemini에 붙여넣어
+     다른 시각의 피드백을 받고 클로드에 공유)
+  
+  Code block 4 (label: "4단계 — 자동 완성"):
+    크로스 리뷰 피드백 반영해서
+    나머지 작업을 agent teams로 완성해줘.
+    완료 후 todo.md 업데이트하고 요약 보고해줘.
+  
+  Aha message: "축하해요! 당신은 이제 에이전틱 엔지니어입니다 🎉"
+
+==============================================
+SCREEN 3: COMPLETION
+==============================================
+Full celebration screen:
+
+Header: "🎉 모든 여정을 완주했어요!"
+Subtext: "당신은 이제 AI 에이전트를 설계하는 사람입니다."
+
+Dream project highlight box:
+  Large, prominent: "나의 목표: [dreamProject]"
+  Style: bg #FCEEE7, border 2px #D97757, radius-xl, p-6
+
+Journey recap: 
+  20 completed step chips in a 4-column grid
+  Each chip: step emoji + step name + ✓ (green)
+  bg #E8F5EE, border #2D7D52
+
+Final Prompt Builder section:
+  Title: "지금 바로 만들어봐요 🚀"
+  
+  4 dropdown fields:
+    1. "어떤 종류의 앱인가요?" 
+       Options: [웹사이트 / AI 챗봇 / 업무 자동화 / 데이터 분석 / 기타]
+    2. "누구를 위한 건가요?"
+       Options: [나 혼자 사용 / 팀과 함께 / 고객에게 / 교육 목적]
+    3. "가장 중요한 기능은?"
+       Options: [AI 대화 / 자동화 워크플로우 / 정보 시각화 / 문서 생성]
+    4. "선호하는 기술 스택은?"
+       Options: [React / Next.js / Python / 상관없음]
+  
+  Auto-generated prompt box (dark bg, mono font):
+    "[앱 종류]를 만들어줘.
+     [대상]을 위한 앱이고,
+     핵심 기능은 [기능]이야.
+     기술 스택: [스택]
+     한국어 UI, 깔끔하고 심플하게 만들어줘.
+     CLAUDE.md 먼저 생성하고, Plan Mode로 시작해줘."
+  
+  Two CTA buttons:
+    Primary: "프롬프트 복사하기 📋"
+    Secondary: "Replit에서 시작하기 →" (opens replit.com/new)
+
+Restart option: "처음부터 다시 해보기" (text link, small, muted)
+
+==============================================
+ANIMATIONS & INTERACTIONS
+==============================================
+Step completion:
+  - Journey map node fills with orange (#D97757) with scale animation
+  - Connecting line draws from current to next node (stroke-dashoffset animation, 0.6s)
+  - Aha message card slides up (translateY + opacity, 0.3s)
+  - Confetti burst (CSS keyframes, 8 particles, orange/warm colors only, 1.2s)
+  - Next step unlocks with subtle pulse on its node
+
+Think First:
+  - Option card hover: border color transition 0.15s
+  - Selection: border + bg change + explanation slides in (0.25s)
+
+Progress bar:
+  - Smooth fill transition (0.4s ease) on each step completion
+
+Chapter completion:
+  - All sub-steps in chapter complete → chapter header shows "✓ 완료!" badge
+  - Small celebration animation on chapter header
+
+Copy button:
+  - Text changes "복사" → "복사됨 ✓" for 1.5s
+  - Subtle scale animation on click
+
+==============================================
+RESPONSIVE DESIGN
+==============================================
+Mobile (< 768px):
+  - Hide left sidebar
+  - Show horizontal chapter progress bar at top instead
+  - Journey map: accessible via floating button (bottom right)
+  - Stack all elements vertically
+  - Reduce padding (px-4 instead of px-8)
+
+Tablet (768px - 1024px):
+  - Sidebar collapses to 220px
+  - Main content adapts
+
+==============================================
+ADDITIONAL REQUIREMENTS
+==============================================
+1. All text must be in Korean (warm, friendly tone, no jargon)
+2. localStorage persistence: 
+   - User can refresh and return to exact same step
+   - Store: dreamProject, completedSteps[], currentStep, sessionMinutes
+3. Session timer: starts when user enters step 1-1, increments every minute
+4. "Claude 앱 열기" button always visible in top bar
+5. Keyboard shortcut: Enter key on completion check = same as clicking "해봤어요"
+6. Smooth scroll to top of content area on each step transition
+7. Meta title: "Claude Code 마스터클래스 | AI 에이전틱 엔지니어링"

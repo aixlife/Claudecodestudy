@@ -21,6 +21,7 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 ```text
 artifacts-monorepo/
 ├── artifacts/              # Deployable applications
+│   ├── korean-learning/    # Claude Code 마스터 클래스 — Korean interactive learning web app (React+Vite, localStorage, no backend)
 │   └── api-server/         # Express API server
 ├── lib/                    # Shared libraries
 │   ├── api-spec/           # OpenAPI spec + Orval codegen config
