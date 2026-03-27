@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Step } from '../data/steps';
+import { Step, Keyword } from '../data/steps';
 import { useAppStore } from '../store/useAppStore';
 
 interface StepContentProps {
@@ -30,6 +30,60 @@ function CopyButton({ code }: { code: string }) {
     >
       {copied ? '복사됨 ✓' : '복사'}
     </button>
+  );
+}
+
+function KeywordsSection({ keywords }: { keywords: Keyword[] }) {
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  return (
+    <div
+      className="rounded-xl mb-6 overflow-hidden"
+      style={{ border: '1px solid #E8E0D6', background: '#FFFFFF' }}
+    >
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{ borderBottom: '1px solid #E8E0D6', background: '#F5F0EB' }}
+      >
+        <span style={{ fontSize: 15 }}>📖</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: '#4A3F35' }}>이 단계의 키워드</span>
+        <span style={{ fontSize: 12, color: '#9D9087', marginLeft: 2 }}>— 처음 보는 단어가 있으면 눌러보세요</span>
+      </div>
+      <div className="flex flex-wrap gap-2 px-4 py-3">
+        {keywords.map((kw, i) => (
+          <button
+            key={i}
+            onClick={() => setOpenIdx(openIdx === i ? null : i)}
+            className="transition-all duration-150"
+            style={{
+              padding: '5px 13px',
+              borderRadius: 999,
+              border: openIdx === i ? '1.5px solid #D97757' : '1.5px solid #E0D8CE',
+              background: openIdx === i ? '#FCEEE7' : '#FAF9F6',
+              color: openIdx === i ? '#D97757' : '#4A3F35',
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            {kw.term} {openIdx === i ? '▲' : '▼'}
+          </button>
+        ))}
+      </div>
+      {openIdx !== null && (
+        <div
+          className="px-4 py-3 mx-4 mb-3 rounded-lg"
+          style={{ background: '#FCEEE7', border: '1px solid #F5D5C5' }}
+        >
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#D97757', marginBottom: 4 }}>
+            {keywords[openIdx].term}
+          </div>
+          <div style={{ fontSize: 14, color: '#3A2E27', lineHeight: 1.7 }}>
+            {keywords[openIdx].explanation}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -197,6 +251,11 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
             </div>
             <div style={{ fontSize: 14, color: '#1A1714', lineHeight: 1.6 }}>{step.insight}</div>
           </div>
+        )}
+
+        {/* Keywords section */}
+        {step.keywords && step.keywords.length > 0 && (
+          <KeywordsSection keywords={step.keywords} />
         )}
 
         {/* Install guide */}
