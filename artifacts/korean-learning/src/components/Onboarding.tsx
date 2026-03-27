@@ -153,6 +153,59 @@ export default function Onboarding() {
         <p className="text-center mt-4" style={{ fontSize: 13, color: '#9D9087' }}>
           총 20단계 · 예상 소요 시간 약 2-3시간 · 클로드 앱 필요
         </p>
+
+        {/* KakaoTalk CTA */}
+        <div className="mt-8 text-center">
+          <p style={{ fontSize: 13, color: '#9D9087', marginBottom: 12 }}>
+            막히는 부분이 있으면 언제든 질문하세요
+          </p>
+          <div className="flex gap-2 justify-center flex-wrap">
+            <a
+              href="https://open.kakao.com/o/gT0uVxJh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-150"
+              style={{
+                background: '#FEE500',
+                color: '#3C1E1E',
+                fontSize: 13,
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#F5DC00';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#FEE500';
+              }}
+            >
+              💬 카카오톡 오픈채팅
+            </a>
+            <a
+              href="https://www.threads.com/@naminsoo_ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-150"
+              style={{
+                border: '1.5px solid #E8E0D6',
+                color: '#6B6560',
+                fontSize: 13,
+                fontWeight: 500,
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#D97757';
+                e.currentTarget.style.color = '#D97757';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#E8E0D6';
+                e.currentTarget.style.color = '#6B6560';
+              }}
+            >
+              📱 Threads
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

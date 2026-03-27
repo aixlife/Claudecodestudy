@@ -210,7 +210,7 @@ CLAUDE.md 먼저 생성하고, Plan Mode로 시작해줘.`;
               {copied ? '복사됨 ✓' : '프롬프트 복사하기 📋'}
             </button>
             <a
-              href="https://replit.com/new"
+              href="https://claude.ai/download"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 rounded-full font-semibold transition-all duration-150"
@@ -234,7 +234,165 @@ CLAUDE.md 먼저 생성하고, Plan Mode로 시작해줘.`;
                 e.currentTarget.style.background = 'transparent';
               }}
             >
-              Replit에서 시작하기 →
+              Claude Code 다운로드 →
+            </a>
+          </div>
+        </div>
+
+        {/* KakaoTalk CTA */}
+        <div
+          className="rounded-2xl p-6 mb-8"
+          style={{ background: '#FEE500', border: '2px solid #F5DC00' }}
+        >
+          <div className="text-center">
+            <div style={{ fontSize: 18, fontWeight: 700, color: '#3C1E1E', marginBottom: 8 }}>
+              함께 성장하는 커뮤니티에 참여하세요
+            </div>
+            <p style={{ fontSize: 14, color: '#5C4033', marginBottom: 16, lineHeight: 1.6 }}>
+              막히는 부분은 질문하고, 다른 사람의 프로젝트도 구경해보세요.
+            </p>
+            <div className="flex gap-3 justify-center flex-wrap">
+              <a
+                href="https://open.kakao.com/o/gT0uVxJh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-full font-semibold transition-all duration-150"
+                style={{
+                  background: '#3C1E1E',
+                  color: '#FEE500',
+                  fontSize: 14,
+                  textDecoration: 'none',
+                  fontFamily: 'inherit',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#2A1515';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#3C1E1E';
+                }}
+              >
+                💬 AI 활용 오픈채팅 참여하기
+              </a>
+              <a
+                href="https://open.kakao.com/o/gKuUoE2h"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 rounded-full font-semibold transition-all duration-150"
+                style={{
+                  background: '#FFFFFF',
+                  color: '#3C1E1E',
+                  fontSize: 14,
+                  textDecoration: 'none',
+                  fontFamily: 'inherit',
+                  border: '2px solid #3C1E1E',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#F5F0EB';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#FFFFFF';
+                }}
+              >
+                💬 실전 프로젝트 채팅방
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Activity intro section */}
+        <div
+          className="rounded-2xl p-6 mb-8"
+          style={{ background: '#FFFFFF', border: '1px solid #E8E0D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+        >
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#1A1714', marginBottom: 4 }}>
+            더 깊이 배우고 싶다면
+          </div>
+          <p style={{ fontSize: 13, color: '#9D9087', marginBottom: 16 }}>
+            AI 에이전틱 엔지니어링 전문가와 함께하세요
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="rounded-xl p-4" style={{ background: '#FAF9F6', border: '1px solid #E8E0D6' }}>
+              <div style={{ fontSize: 20, marginBottom: 8 }}>🏢</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1714', marginBottom: 4 }}>기업 강의 · 컨설팅</div>
+              <div style={{ fontSize: 12, color: '#6B6560', lineHeight: 1.5 }}>
+                Claude Code를 우리 팀에 도입하고 싶다면. B2B 맞춤 교육과 AI 워크플로우 컨설팅을 제공합니다.
+              </div>
+            </div>
+            <div className="rounded-xl p-4" style={{ background: '#FAF9F6', border: '1px solid #E8E0D6' }}>
+              <div style={{ fontSize: 20, marginBottom: 8 }}>🎓</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1714', marginBottom: 4 }}>온라인 심화 강의</div>
+              <div style={{ fontSize: 12, color: '#6B6560', lineHeight: 1.5 }}>
+                20단계 이후, 실전 프로젝트 중심의 심화 과정으로 진짜 AI 에이전트를 만들어보세요.
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 flex gap-3 flex-wrap">
+            <a
+              href="https://www.threads.com/@naminsoo_ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-150"
+              style={{
+                border: '1.5px solid #E8E0D6',
+                color: '#6B6560',
+                fontSize: 13,
+                fontWeight: 500,
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#D97757';
+                e.currentTarget.style.color = '#D97757';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#E8E0D6';
+                e.currentTarget.style.color = '#6B6560';
+              }}
+            >
+              📱 Threads에서 소식 받기
+            </a>
+            <a
+              href="mailto:naminsoo@aixlife.co.kr"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-150"
+              style={{
+                border: '1.5px solid #E8E0D6',
+                color: '#6B6560',
+                fontSize: 13,
+                fontWeight: 500,
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#D97757';
+                e.currentTarget.style.color = '#D97757';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#E8E0D6';
+                e.currentTarget.style.color = '#6B6560';
+              }}
+            >
+              ✉️ 강의 · 컨설팅 문의
+            </a>
+            <a
+              href="https://aixlife.co.kr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-150"
+              style={{
+                border: '1.5px solid #E8E0D6',
+                color: '#6B6560',
+                fontSize: 13,
+                fontWeight: 500,
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#D97757';
+                e.currentTarget.style.color = '#D97757';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#E8E0D6';
+                e.currentTarget.style.color = '#6B6560';
+              }}
+            >
+              🏠 aixlife.co.kr
             </a>
           </div>
         </div>

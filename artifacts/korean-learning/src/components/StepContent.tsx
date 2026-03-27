@@ -530,6 +530,17 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
                   여기서 다운로드
                 </a>
                 하세요.
+                <br /><br />
+                그래도 잘 안 되면{' '}
+                <a
+                  href="https://open.kakao.com/o/gT0uVxJh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#D97757', textDecoration: 'underline' }}
+                >
+                  카카오톡 오픈채팅
+                </a>
+                에서 질문해보세요!
               </div>
             </div>
           )}
