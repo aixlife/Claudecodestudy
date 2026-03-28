@@ -107,7 +107,7 @@ export default function Sidebar() {
 
         {/* 완료 표시 */}
         {completedCount === seq.length && seq.length > 0 && (
-          <div className="text-center mt-5 text-[#D97757] text-base font-semibold">Done</div>
+          <div className="text-center mt-5 text-[#D97757] text-base font-semibold">완료</div>
         )}
       </div>
     </aside>

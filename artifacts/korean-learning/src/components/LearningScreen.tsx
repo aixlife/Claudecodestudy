@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import ModuleContent from './ModuleContent';
 import { useAppStore } from '../store/useAppStore';
@@ -16,6 +16,14 @@ export default function LearningScreen() {
   const level = useAppStore((s) => s.level);
 
   const { activeCount, isConnected } = usePresence(nickname, level || 'beginner');
+  const [showPresence, setShowPresence] = useState(true);
+
+  // 10초 후에도 연결 안 되면 presence 숨김
+  useEffect(() => {
+    if (isConnected) { setShowPresence(true); return; }
+    const timer = setTimeout(() => setShowPresence(false), 10000);
+    return () => clearTimeout(timer);
+  }, [isConnected]);
 
   // 세션 타이머
   useEffect(() => {
@@ -61,16 +69,18 @@ export default function LearningScreen() {
             <span className="text-sm text-[#9D9087] flex-shrink-0">
               {completedCount}/{seq.length}
             </span>
-            {isConnected ? (
-              <span className="inline-flex items-center text-sm text-[#2D7D52] font-medium flex-shrink-0">
-                <span className="inline-block w-2 h-2 rounded-full bg-[#2D7D52] mr-1.5 animate-pulse" />
-                {activeCount}명 학습 중
-              </span>
-            ) : (
-              <span className="inline-flex items-center text-sm text-[#9D9087] flex-shrink-0">
-                <span className="inline-block w-2 h-2 rounded-full bg-[#9D9087] mr-1.5" />
-                연결 중...
-              </span>
+            {showPresence && (
+              isConnected ? (
+                <span className="inline-flex items-center text-sm text-[#2D7D52] font-medium flex-shrink-0">
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#2D7D52] mr-1.5 animate-pulse" />
+                  {activeCount}명 학습 중
+                </span>
+              ) : (
+                <span className="inline-flex items-center text-sm text-[#9D9087] flex-shrink-0">
+                  <span className="inline-block w-2 h-2 rounded-full bg-[#9D9087] mr-1.5" />
+                  연결 중...
+                </span>
+              )
             )}
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
@@ -99,15 +109,10 @@ export default function LearningScreen() {
           <div className="flex items-center justify-between text-xs text-[#9D9087] mb-1">
             <span>{completedCount}/{seq.length} 완료</span>
             <div className="flex items-center gap-2">
-              {isConnected ? (
+              {showPresence && isConnected && (
                 <span className="text-[#2D7D52] font-medium">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#2D7D52] mr-0.5 animate-pulse" />
                   {activeCount}명
-                </span>
-              ) : (
-                <span className="text-[#9D9087]">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#9D9087] mr-0.5" />
-                  ...
                 </span>
               )}
               <span>{Math.round(progress)}%</span>

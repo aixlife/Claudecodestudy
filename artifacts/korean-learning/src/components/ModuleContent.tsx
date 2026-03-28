@@ -205,6 +205,7 @@ export default function ModuleContent() {
   const isCompleted = completedModules.includes(currentModuleId);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showAha, setShowAha] = useState(false);
+  const autoAdvanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // 중간 성취 후킹 카피
   const isMidpoint = track?.midpointModuleId === currentModuleId;
@@ -216,10 +217,10 @@ export default function ModuleContent() {
     setShowAha(true);
     setTimeout(() => setShowConfetti(false), 1500);
 
-    // 자동 다음 이동
+    // 자동 다음 이동 (사이드바 클릭 시 취소됨)
     const nextId = getNextModuleId();
     if (nextId) {
-      setTimeout(() => setCurrentModule(nextId), 1500);
+      autoAdvanceRef.current = setTimeout(() => setCurrentModule(nextId), 1500);
     }
   }, [currentModuleId, isCompleted]);
 
@@ -229,9 +230,14 @@ export default function ModuleContent() {
     if (nextId) setCurrentModule(nextId);
   };
 
+  // 모듈 변경 시 상태 리셋 + 자동이동 타이머 취소
   useEffect(() => {
     setShowAha(false);
     setShowConfetti(false);
+    if (autoAdvanceRef.current) {
+      clearTimeout(autoAdvanceRef.current);
+      autoAdvanceRef.current = null;
+    }
   }, [currentModuleId]);
 
   if (!mod) {

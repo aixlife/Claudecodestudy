@@ -43,7 +43,7 @@ export default function ProfileSetup() {
             onClick={() => goToScreen('onboarding')}
             className="text-sm text-[#9D9087] hover:text-[#D97757] transition-colors"
           >
-            &larr; Back
+            &larr; 뒤로
           </button>
         </div>
       </div>

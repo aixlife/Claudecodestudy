@@ -24,7 +24,7 @@ export default function TrackSelection() {
             onClick={() => goToScreen('profile-setup')}
             className="text-sm text-[#9D9087] hover:text-[#D97757] transition-colors"
           >
-            &larr; Back
+            &larr; 뒤로
           </button>
         </div>
       </div>
