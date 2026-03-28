@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "korean-learning",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@workspace/korean-learning", "dev"],
+      "port": 5173
+    }
+  ]
+}

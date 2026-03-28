@@ -23,7 +23,7 @@ export interface Keyword {
 export interface Step {
   id: string;
   chapter: 1 | 2 | 3;
-  difficulty: '🟢기초' | '🟡실전' | '🔴고급';
+  difficulty: '기초' | '실전' | '고급';
   time: string;
   title: string;
   description: string;
@@ -53,16 +53,16 @@ export interface Chapter {
 }
 
 export const chapters: Chapter[] = [
-  { id: 1, emoji: '🌱', title: '입문편', subtitle: '설치부터 핵심 명령어까지', stepCount: 6, stepLabel: '6단계' },
-  { id: 2, emoji: '⚡', title: '실전편', subtitle: '컨텍스트 관리와 워크플로우', stepCount: 8, stepLabel: '8단계' },
-  { id: 3, emoji: '🚀', title: '고급편', subtitle: 'Skills · Agents · 자동화', stepCount: 6, stepLabel: '6단계' },
+  { id: 1,  title: '입문편', subtitle: '설치부터 핵심 명령어까지', stepCount: 6, stepLabel: '6단계' },
+  { id: 2,  title: '실전편', subtitle: '컨텍스트 관리와 워크플로우', stepCount: 8, stepLabel: '8단계' },
+  { id: 3,  title: '고급편', subtitle: 'Skills · Agents · 자동화', stepCount: 6, stepLabel: '6단계' },
 ];
 
 export const steps: Step[] = [
   {
     id: '1-1',
     chapter: 1,
-    difficulty: '🟢기초',
+    difficulty: '기초',
     time: '약 3분',
     title: '루트 디렉토리에서 시작하기',
     description: '클로드 코드는 실행 위치가 중요합니다. 루트 디렉토리가 아닌 곳에서 실행하면 프로젝트 구조를 잘못 읽어요.',
@@ -101,7 +101,7 @@ export const steps: Step[] = [
   {
     id: '1-2',
     chapter: 1,
-    difficulty: '🟢기초',
+    difficulty: '기초',
     time: '약 5분',
     title: 'CLAUDE.md 만들기 (/init)',
     description: '/init 명령어 하나로 CLAUDE.md 파일이 생성됩니다. 이 파일은 클로드의 두뇌 — 매 세션마다 자동으로 읽어요.',
@@ -151,7 +151,7 @@ export const steps: Step[] = [
   {
     id: '1-3',
     chapter: 1,
-    difficulty: '🟢기초',
+    difficulty: '기초',
     time: '약 5분',
     title: 'Plan Mode 완전 정복',
     description: 'Plan Mode는 클로드가 코드를 바로 짜는 대신 계획을 먼저 보여줘요. 검토 후 승인해야 실행됩니다.',
@@ -190,7 +190,7 @@ export const steps: Step[] = [
   {
     id: '1-4',
     chapter: 1,
-    difficulty: '🟢기초',
+    difficulty: '기초',
     time: '약 3분',
     title: 'Escape & 되감기',
     description: '클로드가 엉뚱한 방향으로 가고 있다면? Escape로 즉시 멈추세요. 두 번 누르면 이전 프롬프트로 되감기도 돼요.',
@@ -222,7 +222,7 @@ export const steps: Step[] = [
   {
     id: '1-5',
     chapter: 1,
-    difficulty: '🟢기초',
+    difficulty: '기초',
     time: '약 3분',
     title: '이미지·스크린샷으로 소통하기',
     description: 'UI 스타일을 말로 설명하면 토큰 낭비에 결과도 부정확해요. 원하는 디자인 이미지를 그대로 드래그앤드롭하세요.',
@@ -256,7 +256,7 @@ export const steps: Step[] = [
   {
     id: '1-6',
     chapter: 1,
-    difficulty: '🟡실전',
+    difficulty: '실전',
     time: '약 10분',
     title: '필수 슬래시 명령어 + 커스텀 명령어',
     description: '6가지 핵심 슬래시 명령어와 나만의 커스텀 명령어를 만들어봐요. 반복 작업을 한 번에 끝내는 비결이에요.',
@@ -301,7 +301,7 @@ git commit 후 git push까지 자동으로 해주는
   {
     id: '2-1',
     chapter: 2,
-    difficulty: '🟡실전',
+    difficulty: '실전',
     time: '약 5분',
     title: 'Second Brain + /memory 시스템',
     description: '클로드가 작업하면서 배운 패턴, 인사이트, 결정 이유를 자동으로 기억하게 만들 수 있어요.',
@@ -338,7 +338,7 @@ git commit 후 git push까지 자동으로 해주는
   {
     id: '2-2',
     chapter: 2,
-    difficulty: '🟡실전',
+    difficulty: '실전',
     time: '약 7분',
     title: 'Lazy Loading 전략',
     description: 'CLAUDE.md에 모든 정보를 몰아넣으면 매 세션마다 수천 토큰이 낭비돼요. 필요할 때만 불러오는 구조로 바꿔야 해요.',
@@ -371,7 +371,7 @@ CLAUDE.md에는 참조 경로만 남겨줘.`,
   {
     id: '2-3',
     chapter: 2,
-    difficulty: '🟡실전',
+    difficulty: '실전',
     time: '약 5분',
     title: 'MCP 효율적 관리',
     description: 'MCP를 많이 연결할수록 안 써도 컨텍스트가 쌓여요. Notion, Linear 같은 대형 MCP는 특히 주의해야 해요.',
@@ -405,7 +405,7 @@ CLAUDE.md에는 참조 경로만 남겨줘.`,
   {
     id: '2-4',
     chapter: 2,
-    difficulty: '🟡실전',
+    difficulty: '실전',
     time: '약 5분',
     title: 'Mermaid 다이어그램으로 아키텍처 전달',
     description: '프로젝트 구조를 글로 설명하면 길어지고 부정확해요. Mermaid 다이어그램으로 표현하면 클로드가 훨씬 빠르게 파악해요.',
@@ -437,7 +437,7 @@ CLAUDE.md에 참조 경로를 추가해줘.`,
   {
     id: '2-5',
     chapter: 2,
-    difficulty: '🟡실전',
+    difficulty: '실전',
     time: '약 5분',
     title: '한 세션 = 한 기능 원칙',
     description: '한 세션에서 여러 기능을 동시에 만들면 컨텍스트가 오염되고 품질이 급격히 떨어져요.',
@@ -470,7 +470,7 @@ CLAUDE.md에 참조 경로를 추가해줘.`,
   {
     id: '2-6',
     chapter: 2,
-    difficulty: '🟡실전',
+    difficulty: '실전',
     time: '약 7분',
     title: 'TDD 기반 스마트 코딩',
     description: '작은 변경 후 테스트를 바로 작성하는 습관이 AI 코딩의 핵심이에요. 나중에 디버깅할 시간을 90% 줄여줘요.',
@@ -508,7 +508,7 @@ CLAUDE.md에 참조 경로를 추가해줘.`,
   {
     id: '2-7',
     chapter: 2,
-    difficulty: '🟡실전',
+    difficulty: '실전',
     time: '약 5분',
     title: 'todo.md 공유 워크플로우',
     description: '오늘 할 일을 todo.md 파일로 클로드와 공유하면 여러 세션에 걸친 작업을 연속성 있게 이어갈 수 있어요.',
@@ -549,7 +549,7 @@ todo.md 파일에 체크리스트로 만들어줘.`,
   {
     id: '2-8',
     chapter: 2,
-    difficulty: '🔴고급',
+    difficulty: '고급',
     time: '약 10분',
     title: 'WAT 프레임워크',
     description: 'Workflow → Agents → Tools 순서로 프로젝트를 설계하는 프레임워크예요. 복잡한 작업도 안정적으로 관리해줘요.',
@@ -587,7 +587,7 @@ T: 필요한 스크립트, MCP, Hooks 목록화
   {
     id: '3-1',
     chapter: 3,
-    difficulty: '🔴고급',
+    difficulty: '고급',
     time: '약 7분',
     title: 'Skill이란 무엇인가',
     description: 'Skill은 AI에게 주는 업무 매뉴얼이에요. 한 번 만들면 자동 트리거 되고, 항상 같은 품질의 결과물이 나와요.',
@@ -621,7 +621,7 @@ T: 필요한 스크립트, MCP, Hooks 목록화
   {
     id: '3-2',
     chapter: 3,
-    difficulty: '🔴고급',
+    difficulty: '고급',
     time: '약 10분',
     title: 'Skill 만들기 (Skill Creator)',
     description: 'Skill Creator 플러그인을 설치하면 스킬 만들기가 자동화돼요. 내 반복 업무를 직접 스킬로 만들어봐요.',
@@ -667,7 +667,7 @@ T: 필요한 스크립트, MCP, Hooks 목록화
   {
     id: '3-3',
     chapter: 3,
-    difficulty: '🔴고급',
+    difficulty: '고급',
     time: '약 10분',
     title: 'Subagent 만들기',
     description: 'Subagent는 별도의 컨텍스트 공간을 가진 AI 직원이에요. 파일 100개를 뒤져도 메인 컨텍스트가 오염되지 않아요.',
@@ -710,7 +710,7 @@ T: 필요한 스크립트, MCP, Hooks 목록화
   {
     id: '3-4',
     chapter: 3,
-    difficulty: '🔴고급',
+    difficulty: '고급',
     time: '약 10분',
     title: 'Agent Teams — AI 팀 꾸리기',
     description: '여러 Subagent가 동시에 병렬로 일하는 Agent Teams를 경험해봐요. 10분 작업이 3~4분으로 줄어들어요.',
@@ -745,7 +745,7 @@ agent teams로 병렬 처리해줘.
   {
     id: '3-5',
     chapter: 3,
-    difficulty: '🔴고급',
+    difficulty: '고급',
     time: '약 7분',
     title: 'Hooks 자동화 파이프라인',
     description: '특정 이벤트가 발생할 때 자동으로 실행되는 파이프라인을 만들어요. 커밋, 저장, 에러마다 자동 처리가 가능해요.',
@@ -780,7 +780,7 @@ agent teams로 병렬 처리해줘.
   {
     id: '3-6',
     chapter: 3,
-    difficulty: '🔴고급',
+    difficulty: '고급',
     time: '약 15분',
     title: '통합 데모 — 나의 완성 워크플로우',
     description: '지금까지 배운 모든 것을 하나의 워크플로우로 연결해요. 이걸 실행하는 순간 당신은 에이전틱 엔지니어가 됩니다.',
@@ -828,7 +828,7 @@ agent teams로 병렬 처리해줘.
       { term: '크로스 AI 리뷰', explanation: '같은 증상으로 두 의사에게 소견을 물어보는 것처럼, 클로드가 만든 결과물을 ChatGPT나 Gemini에게 검토시키는 방법이에요. 다른 AI의 시각으로 약점을 잡아낼 수 있어요.' },
       { term: 'export', explanation: '지금까지 한 작업 내용을 파일로 내보내는 것이에요. 한글 문서를 PDF로 저장하는 것과 비슷해요. 클로드 대화 내용을 다른 AI에 공유할 때 이 기능을 써요.' },
     ],
-    ahaMessage: '축하해요! 당신은 이제 에이전틱 엔지니어입니다 🎉',
+    ahaMessage: '축하해요! 당신은 이제 에이전틱 엔지니어입니다 ',
   },
 ];
 

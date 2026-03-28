@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { getTrack } from '../data/tracks';
+import Footer from './Footer';
 
 const appTypes = ['웹사이트', 'AI 챗봇', '업무 자동화', '데이터 분석', '기타'];
 const audiences = ['개인 사용', '소규모 팀', '기업/조직', '일반 대중'];
@@ -51,7 +52,6 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
         {/* 완료 후킹 카피 */}
         {track && (
           <div className="text-center mb-8">
-            <div className="text-5xl mb-4">🎉</div>
             <h1 className="text-2xl md:text-3xl font-bold text-[#1A1714] mb-3">
               트랙 완료!
             </h1>
@@ -72,8 +72,8 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
             <p className="text-xs text-[#9D9087]">학습 시간(분)</p>
           </div>
           <div className="text-center p-4 bg-white rounded-xl border border-[#E8E0D6]">
-            <p className="text-2xl font-bold" style={{ color: track?.color || '#D97757' }}>
-              {track?.emoji || '🚀'}
+            <p className="text-xs font-bold" style={{ color: track?.color || '#D97757', paddingBottom: '4px' }}>
+              트랙 완료
             </p>
             <p className="text-xs text-[#9D9087]">{track?.title || '자유형'}</p>
           </div>
@@ -84,14 +84,14 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
           <div className="mb-8 p-5 bg-[#FCEEE7] rounded-xl border border-[#D97757]/20">
             <p className="text-xs text-[#9D9087] mb-1">나의 프로젝트</p>
             <p className="text-lg font-bold text-[#1A1714]">{dreamProject}</p>
-            <p className="text-sm text-[#6B6560] mt-2">이제 이걸 진짜로 만들어볼 차례예요 👇</p>
+            <p className="text-sm text-[#6B6560] mt-2">이제 이걸 진짜로 만들어볼 차례예요</p>
           </div>
         )}
 
         {/* 프롬프트 빌더 */}
         <div className="bg-white rounded-2xl border border-[#E8E0D6] p-6 mb-8">
           <h2 className="text-lg font-bold text-[#1A1714] mb-4">
-            🛠 나만의 시작 프롬프트 만들기
+            나만의 시작 프롬프트 만들기
           </h2>
 
           <div className="space-y-4 mb-6">
@@ -181,7 +181,7 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
               onClick={copyPrompt}
               className="absolute top-2 right-2 px-3 py-1 text-xs rounded-md bg-[#D97757] text-white hover:bg-[#B85C35] transition-colors"
             >
-              {copied ? '복사됨!' : '📋 프롬프트 복사'}
+              {copied ? '복사됨' : '프롬프트 복사'}
             </button>
           </div>
         </div>
@@ -201,7 +201,7 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
 
         {/* 커뮤니티 CTA */}
         <div className="bg-white rounded-2xl border border-[#E8E0D6] p-6 mb-8">
-          <h3 className="font-bold text-[#1A1714] mb-4">💬 함께 성장하기</h3>
+          <h3 className="font-bold text-[#1A1714] mb-4">함께 성장하기</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <a
               href="https://open.kakao.com/o/gT0uVxJh"
@@ -210,7 +210,6 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
               className="flex items-center gap-3 p-4 rounded-xl transition-colors"
               style={{ background: '#FEE500' }}
             >
-              <span className="text-xl">💬</span>
               <div>
                 <p className="font-semibold text-sm" style={{ color: '#3C1E1E' }}>AI 활용 오픈채팅</p>
                 <p className="text-xs" style={{ color: '#5C3C3C' }}>3,000+명이 함께합니다</p>
@@ -223,7 +222,6 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
               className="flex items-center gap-3 p-4 rounded-xl transition-colors"
               style={{ background: '#FEE500' }}
             >
-              <span className="text-xl">💬</span>
               <div>
                 <p className="font-semibold text-sm" style={{ color: '#3C1E1E' }}>실전 프로젝트 채팅방</p>
                 <p className="text-xs" style={{ color: '#5C3C3C' }}>700+명과 프로젝트 공유</p>
@@ -234,7 +232,7 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
 
         {/* 더 깊이 배우기 */}
         <div className="bg-white rounded-2xl border border-[#E8E0D6] p-6 mb-8">
-          <h3 className="font-bold text-[#1A1714] mb-4">🎓 더 깊이 배우고 싶다면</h3>
+          <h3 className="font-bold text-[#1A1714] mb-4">더 깊이 배우고 싶다면</h3>
           <div className="space-y-3">
             <div className="p-3 rounded-lg bg-[#F5F0EB]">
               <p className="text-sm font-medium text-[#1A1714]">기업 강의 / 컨설팅</p>
@@ -246,14 +244,14 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
             </div>
           </div>
           <div className="flex gap-3 mt-4 text-xs">
-            <a href="https://www.threads.com/@naminsoo_ai" target="_blank" rel="noopener noreferrer" className="text-[#D97757] hover:underline">📱 Threads</a>
-            <a href="mailto:naminsoo@aixlife.co.kr" className="text-[#D97757] hover:underline">📧 문의</a>
-            <a href="https://aixlife.co.kr" target="_blank" rel="noopener noreferrer" className="text-[#D97757] hover:underline">🌐 aixlife.co.kr</a>
+            <a href="https://www.threads.com/@naminsoo_ai" target="_blank" rel="noopener noreferrer" className="text-[#D97757] hover:underline">Threads</a>
+            <a href="mailto:naminsoo@aixlife.co.kr" className="text-[#D97757] hover:underline">문의</a>
+            <a href="https://aixlife.co.kr" target="_blank" rel="noopener noreferrer" className="text-[#D97757] hover:underline">aixlife.co.kr</a>
           </div>
         </div>
 
         {/* 다시 시작 */}
-        <div className="text-center">
+        <div className="text-center mb-12">
           <button
             onClick={reset}
             className="px-6 py-2.5 rounded-full border border-[#E8E0D6] text-sm text-[#6B6560] hover:border-[#D97757] hover:text-[#D97757] transition-colors"
@@ -262,6 +260,7 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
           </button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

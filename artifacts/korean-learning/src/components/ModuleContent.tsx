@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAppStore, resolveModule } from '../store/useAppStore';
 import { getTrack } from '../data/tracks';
 import GateSystem from './GateSystem';
+import Footer from './Footer';
 import type { Module, CodeBlock, Keyword } from '../data/types';
 
 // 코드 블록 컴포넌트
@@ -31,7 +32,7 @@ function CodeBlockView({ block }: { block: CodeBlock }) {
         </button>
       </div>
       {block.tip && (
-        <p className="mt-1.5 text-xs text-[#9D9087] leading-relaxed">💡 {block.tip}</p>
+        <p className="mt-1.5 text-xs text-[#9D9087] leading-relaxed">Tip: {block.tip}</p>
       )}
     </div>
   );
@@ -43,7 +44,7 @@ function KeywordsSection({ keywords }: { keywords: Keyword[] }) {
 
   return (
     <div className="mt-6">
-      <p className="text-xs font-semibold text-[#9D9087] mb-2">📖 용어 설명</p>
+      <p className="text-xs font-semibold text-[#9D9087] mb-2">용어 설명</p>
       <div className="space-y-1.5">
         {keywords.map((kw) => (
           <div key={kw.term} className="rounded-lg border border-[#E8E0D6] overflow-hidden">
@@ -70,7 +71,6 @@ function KeywordsSection({ keywords }: { keywords: Keyword[] }) {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 text-xs text-[#9D9087] hover:text-[#D97757] transition-colors"
         >
-          <span>🔍</span>
           <span>여기 없는 용어는 <span className="underline">스스로 찾아보기</span></span>
         </a>
       </div>
@@ -84,7 +84,7 @@ function ThinkFirstQuiz({ thinkFirst }: { thinkFirst: NonNullable<Module['thinkF
 
   return (
     <div className="mb-6 p-5 bg-white rounded-xl border border-[#E8E0D6]">
-      <p className="text-xs font-semibold text-[#D97757] mb-2">🤔 먼저 생각해보기</p>
+      <p className="text-xs font-semibold text-[#D97757] mb-2">먼저 생각해보기</p>
       <p className="font-medium text-[#1A1714] mb-3">{thinkFirst.question}</p>
       <div className="space-y-2">
         {thinkFirst.options.map((opt, i) => {
@@ -179,8 +179,8 @@ export default function ModuleContent() {
   const idx = getCurrentModuleIndex();
   const total = getTotalModules();
   const difficultyLabel =
-    mod.difficulty === 'basic' ? '🟢 기초' :
-    mod.difficulty === 'practical' ? '🟡 실전' : '🔴 고급';
+    mod.difficulty === 'basic' ? '기초' :
+    mod.difficulty === 'practical' ? '실전' : '고급';
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -219,7 +219,7 @@ export default function ModuleContent() {
             {difficultyLabel}
           </span>
           <span className="text-xs px-2 py-0.5 rounded-full bg-[#F5F0EB] text-[#9D9087]">
-            ⏱ {mod.time}
+            {mod.time}
           </span>
           {mod.isOptional && (
             <span className="text-xs px-2 py-0.5 rounded-full bg-[#FCEEE7] text-[#D97757]">선택</span>
@@ -229,7 +229,7 @@ export default function ModuleContent() {
         {/* 제목 */}
         <h1 className="text-2xl font-bold text-[#1A1714] mb-2">{mod.title}</h1>
         {mod.metaphor && (
-          <p className="text-sm text-[#D97757] italic mb-4">💡 {mod.metaphor}</p>
+          <p className="text-sm text-[#D97757] italic mb-4">{mod.metaphor}</p>
         )}
 
         {/* 설명 */}
@@ -312,7 +312,7 @@ export default function ModuleContent() {
         {/* 중간 성취 후킹 카피 */}
         {isMidpoint && isCompleted && track && (
           <div className="mt-6 p-4 rounded-xl border-2" style={{ borderColor: track.color, backgroundColor: track.color + '10' }}>
-            <p className="text-sm font-bold text-[#1A1714]">🎉 {track.hookCopy.midpoint}</p>
+            <p className="text-sm font-bold text-[#1A1714]">{track.hookCopy.midpoint}</p>
           </div>
         )}
 
@@ -329,7 +329,7 @@ export default function ModuleContent() {
         {/* Aha 메시지 */}
         {(isCompleted || showAha) && (
           <div className="mt-4 p-4 bg-[#E8F5EE] rounded-xl text-[#2D7D52] text-sm font-medium slide-up">
-            💡 {mod.ahaMessage}
+            {mod.ahaMessage}
           </div>
         )}
 
@@ -343,6 +343,7 @@ export default function ModuleContent() {
           </button>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

@@ -44,7 +44,7 @@ function KeywordsSection({ keywords }: { keywords: Keyword[] }) {
         className="flex items-center gap-2 px-4 py-3"
         style={{ borderBottom: '1px solid #E8E0D6', background: '#F5F0EB' }}
       >
-        <span style={{ fontSize: 15 }}>📖</span>
+        
         <span style={{ fontSize: 13, fontWeight: 700, color: '#4A3F35' }}>이 단계의 키워드</span>
         <span style={{ fontSize: 12, color: '#9D9087', marginLeft: 2 }}>— 처음 보는 단어가 있으면 눌러보세요</span>
       </div>
@@ -163,15 +163,15 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
   };
 
   const difficultyColor: Record<string, string> = {
-    '🟢기초': '#2D7D52',
-    '🟡실전': '#B87D2B',
-    '🔴고급': '#C0392B',
+    '기초': '#2D7D52',
+    '실전': '#B87D2B',
+    '고급': '#C0392B',
   };
 
   const difficultyBg: Record<string, string> = {
-    '🟢기초': '#E8F5EE',
-    '🟡실전': '#FEF9EE',
-    '🔴고급': '#FDECEA',
+    '기초': '#E8F5EE',
+    '실전': '#FEF9EE',
+    '고급': '#FDECEA',
   };
 
   const chapterLabel = ['', '1편 · 입문편', '2편 · 실전편', '3편 · 고급편'][step.chapter];
@@ -260,7 +260,7 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
             style={{ background: '#FFFFFF', border: '1px solid #E8E0D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
           >
             <div style={{ fontSize: 15, fontWeight: 600, color: '#1A1714', marginBottom: 12 }}>
-              📦 {step.installGuide.title}
+               {step.installGuide.title}
             </div>
             <ol className="space-y-2">
               {step.installGuide.steps.map((s, i) => (
@@ -299,7 +299,7 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
             style={{ background: '#FFFFFF', border: '1px solid #E8E0D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
           >
             <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1714', marginBottom: 10 }}>
-              잠깐, 먼저 생각해볼까요? 🤔
+              잠깐, 먼저 생각해볼까요? 
             </div>
             <div style={{ fontSize: 15, color: '#1A1714', marginBottom: 14, lineHeight: 1.6 }}>
               {step.thinkFirst.question}
@@ -350,7 +350,7 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
                   </div>
                 ) : (
                   <div style={{ fontSize: 13, color: '#1A1714' }}>
-                    한 번 더 생각해봐요 🙂 다른 선택지도 눌러보세요!
+                    한 번 더 생각해봐요  다른 선택지도 눌러보세요!
                   </div>
                 )}
               </div>
@@ -417,7 +417,7 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
             <div
               style={{ fontSize: 13, fontWeight: 600, color: '#6B6560', marginBottom: 12 }}
             >
-              📋 Claude 앱에서 해보세요
+               Claude 앱에서 해보세요
             </div>
             <div className="space-y-4">
               {step.codeBlocks.map((block, idx) => (
@@ -441,7 +441,7 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
                       className="mt-2 flex items-start gap-2"
                       style={{ fontSize: 12, color: '#9D9087', lineHeight: 1.5 }}
                     >
-                      <span>💡</span>
+                      <span className="text-[#D97757] font-bold">INFO</span>
                       <span>{block.tip}</span>
                     </div>
                   )}
@@ -479,7 +479,7 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
                 e.currentTarget.style.background = isCompleted ? '#2D7D52' : '#D97757';
               }}
             >
-              {isCompleted ? '✅ 완료! 다음으로 →' : '✅ 해봤어요! 다음으로 →'}
+              {isCompleted ? '완료! 다음으로 →' : '해봤어요! 다음으로 →'}
             </button>
             <button
               onClick={() => setShowHint(!showHint)}
@@ -514,7 +514,7 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
               style={{ background: '#F5F0EB', border: '1px solid #E8E0D6' }}
             >
               <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1714', marginBottom: 8 }}>
-                도움말 💬
+                도움말
               </div>
               <div style={{ fontSize: 13, color: '#6B6560', lineHeight: 1.6 }}>
                 걱정하지 마세요! Claude Code 앱을 열고 터미널에서 위의 명령어를 그대로 복사해서 붙여넣어 보세요.
@@ -552,7 +552,7 @@ export default function StepContent({ step, onComplete }: StepContentProps) {
               style={{ background: '#E8F5EE', border: '1px solid #2D7D52' }}
             >
               <div className="flex items-start gap-2">
-                <span style={{ fontSize: 18 }}>✨</span>
+                <span style={{ fontSize: 18 }}></span>
                 <div>
                   <div style={{ fontSize: 12, fontWeight: 700, color: '#2D7D52', marginBottom: 4 }}>
                     아하! 포인트
