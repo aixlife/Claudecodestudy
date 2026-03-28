@@ -499,6 +499,7 @@ export const optionalModules: Module[] = [
     difficulty: 'advanced',
     time: '약 15분',
     isOptional: true,
+    insight: '결제는 절대 직접 만들지 마세요. Stripe 하나로 100개국 통화, 사기 탐지, PCI 인증을 모두 해결할 수 있어요.',
     thinkFirst: {
       question: '결제 시스템을 직접 만들어야 할까요?',
       options: [
@@ -537,6 +538,7 @@ Stripe를 연동해서 월 구독 결제를 받을 수 있게 해줘.
     difficulty: 'practical',
     time: '약 10분',
     isOptional: true,
+    insight: '새로고침하면 사라지는 데이터는 진짜 서비스가 아니에요. DB 연결 하나로 여러분의 앱이 진짜 제품이 됩니다.',
     thinkFirst: {
       question: '데이터베이스가 왜 필요할까요?',
       options: [
@@ -578,6 +580,7 @@ CRUD 기능을 포함해줘.`,
     difficulty: 'practical',
     time: '약 10분',
     isOptional: true,
+    insight: '비밀번호를 직접 저장하면 해킹 시 사용자 피해가 직결돼요. Supabase Auth나 소셜 로그인을 쓰면 이 책임을 전문가에게 맡길 수 있어요.',
     thinkFirst: {
       question: '로그인 시스템을 직접 만들어야 할까요?',
       options: [
