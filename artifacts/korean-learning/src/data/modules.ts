@@ -17,7 +17,7 @@ export const commonModules: Module[] = [
         'claude.ai/download 방문 → Claude 앱 다운로드 (Mac / Windows)',
         '앱 설치 후 실행 → Anthropic 계정으로 로그인',
         '프로젝트 폴더 만들기 — 맥: 문서(Documents) 또는 홈 폴더 아래에 "Projects" 폴더를 만들고 그 안에 프로젝트별 폴더를 만들어요. 윈도우: 문서(Documents) 폴더 아래에 같은 방식으로. 바탕화면도 가능하지만, 정리가 어려워져요.',
-        '앱 안에서 "Code" 탭 선택 → 프로젝트 폴더 지정 → 바로 시작!',
+        '앱 상단의 "코드" 탭 클릭 → 대화창 하단에서 프로젝트 폴더 선택 → 바로 시작!',
       ],
     },
     thinkFirst: {
@@ -33,7 +33,7 @@ export const commonModules: Module[] = [
     comparisonTable: {
       headers: ['방법', '시작 방법', '특징', '추천 대상'],
       rows: [
-        ['앱 (Code 탭)', '앱 열기 → Code 탭 → 폴더 선택', '마우스로 조작, 초보자 친화적', '처음 시작하는 분'],
+        ['앱 (코드 탭)', '앱 열기 → 상단 "코드" 탭 → 하단에서 폴더 선택', '마우스로 조작, 초보자 친화적', '처음 시작하는 분'],
         ['터미널/CLI', '터미널 열기 → cd 폴더 → claude 입력', '키보드 중심, 자동화 가능', '터미널에 익숙한 분'],
         ['IDE 확장', 'VS Code/JetBrains에서 확장 설치', '코드 에디터와 통합', '이미 IDE 사용하는 분'],
       ],
@@ -42,8 +42,8 @@ export const commonModules: Module[] = [
       {
         label: '방법 A — 앱에서 시작하기 (추천)',
         code: `1. Claude 앱 실행
-2. 왼쪽 메뉴에서 "Code" 탭 클릭
-3. "Select folder" 버튼으로 프로젝트 폴더 선택
+2. 상단 메뉴에서 "코드" 탭 클릭
+3. 대화창 하단의 폴더 아이콘으로 프로젝트 폴더 선택
 4. 대화창에 바로 명령 입력!`,
         tip: '가장 쉬운 방법이에요. 터미널을 몰라도 됩니다.',
       },
@@ -59,7 +59,7 @@ export const commonModules: Module[] = [
       },
     ],
     keywords: [
-      { term: 'Claude 앱의 Code 탭', explanation: 'Claude 앱을 열면 왼쪽에 여러 탭이 있어요. 그중 "Code" 탭을 누르면 클로드 코드 모드가 시작돼요. 폴더를 선택하고 바로 대화하면서 코딩할 수 있어요. 터미널을 몰라도 됩니다.' },
+      { term: 'Claude 앱의 코드 탭', explanation: 'Claude 앱을 열면 상단에 "채팅", "Cowork", "코드" 탭이 있어요. "코드" 탭을 누르면 클로드 코드 모드가 시작돼요. 대화창 하단에서 폴더를 선택하고 바로 대화하면서 코딩할 수 있어요. 터미널을 몰라도 됩니다.' },
       { term: '터미널', explanation: '마우스 대신 텍스트 명령어로 컴퓨터를 조작하는 검은 화면이에요. 맥에서는 기본 앱인 "터미널"(Spotlight에서 "터미널" 검색), 윈도우에서는 "명령 프롬프트" 또는 "PowerShell"이 같은 역할을 해요.' },
       { term: 'mkdir', explanation: '"make directory"의 줄임말로, "폴더 만들기" 명령이에요. mkdir my-project 이라고 치면 my-project라는 이름의 새 폴더가 만들어져요.' },
       { term: 'cd', explanation: '"change directory"의 줄임말로, "폴더 이동" 명령이에요. cd my-project 이라고 치면 그 폴더 안으로 들어가요. cd ~는 홈 폴더(내 기본 위치)로 돌아가는 거예요.' },
