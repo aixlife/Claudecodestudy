@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { chapters } from '../data/steps';
+import { tracks } from '../data/tracks';
 
 export default function Onboarding() {
   const { dreamProject, setDreamProject, goToScreen } = useAppStore();
@@ -9,7 +9,7 @@ export default function Onboarding() {
   const handleStart = () => {
     if (localProject.trim()) {
       setDreamProject(localProject.trim());
-      goToScreen('learning');
+      goToScreen('track-selection');
     }
   };
 
@@ -26,7 +26,7 @@ export default function Onboarding() {
         >
           C
         </div>
-        <span style={{ color: '#1A1714', fontSize: 14, fontWeight: 600 }}>Claude Code 마스터클래스</span>
+        <span style={{ color: '#1A1714', fontSize: 14, fontWeight: 600 }}>바이브코딩 마스터클래스</span>
       </div>
 
       <div className="w-full max-w-[560px]">
@@ -36,18 +36,18 @@ export default function Onboarding() {
             className="inline-block text-sm font-semibold mb-4 px-3 py-1 rounded-full"
             style={{ color: '#D97757', background: '#FCEEE7', fontSize: 12, letterSpacing: '0.05em' }}
           >
-            AI 에이전틱 엔지니어링
+            프로젝트형 바이브코딩 학습
           </div>
           <h1
             className="mb-4"
             style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.2, color: '#1A1714' }}
           >
-            나만의 AI 직원팀을<br />만들어보세요
+            뭘 만들고 싶은지부터<br />시작하세요
           </h1>
           <p style={{ color: '#6B6560', fontSize: 15, lineHeight: 1.7 }}>
-            입문부터 고급까지 — 클로드 코드의 진짜 힘을 경험합니다.<br />
-            이 여정을 마치면, 코드를 짜는 사람이 아니라<br />
-            AI 에이전트를 설계하는 사람이 됩니다.
+            클로드 코드 앱을 설치하고, 내 컴퓨터에서 직접 만들어봐요.<br />
+            도구는 상관없어요 — <span style={{ fontWeight: 600 }}>핵심 개념</span>을 배우면 어디서든 써요.<br />
+            <span style={{ color: '#D97757', fontWeight: 600 }}>현재 전부 무료</span>예요.
           </p>
         </div>
 
@@ -57,11 +57,14 @@ export default function Onboarding() {
           style={{ background: '#FFFFFF', border: '1px solid #E8E0D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
         >
           <label
-            className="block mb-2 font-semibold"
+            className="block mb-1 font-semibold"
             style={{ fontSize: 15, color: '#1A1714' }}
           >
             먼저, 무엇을 만들어보고 싶으세요?
           </label>
+          <p style={{ fontSize: 12, color: '#9D9087', marginBottom: 12 }}>
+            가게 창업처럼 — 어떤 가게를 열고 싶은지 정하는 것부터 시작해요
+          </p>
           <textarea
             value={localProject}
             onChange={(e) => setLocalProject(e.target.value)}
@@ -78,12 +81,8 @@ export default function Onboarding() {
               fontFamily: 'inherit',
               lineHeight: 1.6,
             }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = '#D97757';
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = '#E8E0D6';
-            }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = '#D97757'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = '#E8E0D6'; }}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -91,16 +90,13 @@ export default function Onboarding() {
               }
             }}
           />
-          <p style={{ fontSize: 12, color: '#9D9087', marginTop: 8 }}>
-            구체적일수록 마지막 단계에서 더 정확한 프롬프트가 만들어져요
-          </p>
         </div>
 
-        {/* Chapter preview cards */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          {chapters.map((ch) => (
+        {/* Track preview cards */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {tracks.map((track) => (
             <div
-              key={ch.id}
+              key={track.id}
               className="rounded-xl p-4"
               style={{
                 background: '#FFFFFF',
@@ -108,18 +104,12 @@ export default function Onboarding() {
                 boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
               }}
             >
-              <div className="text-2xl mb-2">{ch.emoji}</div>
+              <div className="text-2xl mb-2">{track.emoji}</div>
               <div style={{ fontSize: 13, fontWeight: 600, color: '#1A1714', marginBottom: 4 }}>
-                {ch.title}
+                {track.title}
               </div>
-              <div style={{ fontSize: 12, color: '#6B6560', marginBottom: 6, lineHeight: 1.4 }}>
-                {ch.subtitle}
-              </div>
-              <div
-                className="inline-block rounded-full px-2 py-0.5"
-                style={{ background: '#F5F0EB', color: '#9D9087', fontSize: 11 }}
-              >
-                {ch.stepLabel}
+              <div style={{ fontSize: 12, color: '#6B6560', lineHeight: 1.4 }}>
+                {track.subtitle}
               </div>
             </div>
           ))}
@@ -137,21 +127,17 @@ export default function Onboarding() {
             boxShadow: localProject.trim() ? '0 4px 12px rgba(217,119,87,0.3)' : 'none',
           }}
           onMouseEnter={(e) => {
-            if (localProject.trim()) {
-              e.currentTarget.style.background = '#B85C35';
-            }
+            if (localProject.trim()) e.currentTarget.style.background = '#B85C35';
           }}
           onMouseLeave={(e) => {
-            if (localProject.trim()) {
-              e.currentTarget.style.background = '#D97757';
-            }
+            if (localProject.trim()) e.currentTarget.style.background = '#D97757';
           }}
         >
-          여정 시작하기 →
+          트랙 선택하러 가기 →
         </button>
 
         <p className="text-center mt-4" style={{ fontSize: 13, color: '#9D9087' }}>
-          총 20단계 · 예상 소요 시간 약 2-3시간 · 클로드 앱 필요
+          클로드 코드 앱 필요 · <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer" style={{ color: '#D97757', textDecoration: 'underline' }}>다운로드</a>
         </p>
 
         {/* KakaoTalk CTA */}
@@ -165,19 +151,7 @@ export default function Onboarding() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-150"
-              style={{
-                background: '#FEE500',
-                color: '#3C1E1E',
-                fontSize: 13,
-                fontWeight: 600,
-                textDecoration: 'none',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#F5DC00';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#FEE500';
-              }}
+              style={{ background: '#FEE500', color: '#3C1E1E', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}
             >
               💬 카카오톡 오픈채팅
             </a>
@@ -186,21 +160,7 @@ export default function Onboarding() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full transition-all duration-150"
-              style={{
-                border: '1.5px solid #E8E0D6',
-                color: '#6B6560',
-                fontSize: 13,
-                fontWeight: 500,
-                textDecoration: 'none',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#D97757';
-                e.currentTarget.style.color = '#D97757';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#E8E0D6';
-                e.currentTarget.style.color = '#6B6560';
-              }}
+              style={{ border: '1.5px solid #E8E0D6', color: '#6B6560', fontSize: 13, fontWeight: 500, textDecoration: 'none' }}
             >
               📱 Threads
             </a>

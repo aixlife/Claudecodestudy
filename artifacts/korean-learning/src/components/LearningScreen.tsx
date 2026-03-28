@@ -1,188 +1,93 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Sidebar from './Sidebar';
-import StepContent from './StepContent';
+import ModuleContent from './ModuleContent';
 import { useAppStore } from '../store/useAppStore';
-import { steps, getNextStep, TOTAL_STEPS } from '../data/steps';
+import { getTrack } from '../data/tracks';
 
 export default function LearningScreen() {
-  const {
-    currentStep,
-    completedSteps,
-    setCurrentStep,
-    completeStep,
-    goToScreen,
-    startSession,
-    incrementSessionMinutes,
-    sessionMinutes,
-  } = useAppStore();
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const startSession = useAppStore((s) => s.startSession);
+  const incrementSessionMinutes = useAppStore((s) => s.incrementSessionMinutes);
+  const selectedTrack = useAppStore((s) => s.selectedTrack);
+  const completedModules = useAppStore((s) => s.completedModules);
+  const getModuleSequence = useAppStore((s) => s.getModuleSequence);
+  const currentModuleId = useAppStore((s) => s.currentModuleId);
 
+  // 세션 타이머
   useEffect(() => {
     startSession();
-    timerRef.current = setInterval(() => {
-      incrementSessionMinutes();
-    }, 60000);
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
+    const interval = setInterval(() => incrementSessionMinutes(), 60000);
+    return () => clearInterval(interval);
   }, []);
 
-  const step = steps.find((s) => s.id === currentStep);
-  const progressPercent = (completedSteps.length / TOTAL_STEPS) * 100;
-
-  const handleComplete = (immediate = false) => {
-    const wasAlreadyDone = completedSteps.includes(currentStep);
-    completeStep(currentStep);
-    const next = getNextStep(currentStep);
-    const delay = wasAlreadyDone || immediate ? 0 : 1200;
-    const completionDelay = wasAlreadyDone || immediate ? 0 : 1500;
-    if (next) {
-      setTimeout(() => {
-        setCurrentStep(next.id);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, delay);
-    } else {
-      setTimeout(() => {
-        goToScreen('completion');
-      }, completionDelay);
-    }
-  };
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && !completedSteps.includes(currentStep)) {
-      const target = e.target as HTMLElement;
-      if (target.tagName !== 'TEXTAREA' && target.tagName !== 'INPUT') {
-        handleComplete();
-      }
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [currentStep, completedSteps]);
-
-  if (!step) return null;
-
-  const chapterTitle = ['', '1편 · 입문편', '2편 · 실전편', '3편 · 고급편'][step.chapter];
+  const track = selectedTrack ? getTrack(selectedTrack) : null;
+  const seq = getModuleSequence();
+  const completedCount = seq.filter((id) => completedModules.includes(id)).length;
+  const progress = seq.length > 0 ? (completedCount / seq.length) * 100 : 0;
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ background: '#FAF9F6' }}>
-      {/* Progress bar top */}
-      <div className="progress-bar-track">
-        <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }} />
-      </div>
-
-      {/* Sidebar - hidden on mobile */}
-      <div className="hidden md:flex">
-        <Sidebar />
-      </div>
-
-      {/* Main area */}
-      <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Top bar */}
+    <div className="h-screen flex bg-[#FAF9F6]">
+      {/* 프로그레스 바 (최상단) */}
+      <div className="fixed top-0 left-0 right-0 z-50 progress-bar-track" style={{ height: 3 }}>
         <div
-          className="flex items-center justify-between px-6 py-3 flex-shrink-0"
-          style={{
-            background: '#FFFFFF',
-            borderBottom: '1px solid #E8E0D6',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-          }}
-        >
+          className="progress-bar-fill h-full transition-all duration-500"
+          style={{ width: `${progress}%`, background: track?.color || '#D97757' }}
+        />
+      </div>
+
+      {/* 사이드바 */}
+      <Sidebar />
+
+      {/* 메인 영역 */}
+      <div className="flex-1 flex flex-col min-h-0">
+        {/* 상단 바 */}
+        <div className="h-12 border-b border-[#E8E0D6] bg-white/80 backdrop-blur-sm flex items-center justify-between px-4 flex-shrink-0">
           <div className="flex items-center gap-3">
-            {/* Mobile: chapter indicator */}
-            <div className="md:hidden flex items-center gap-2">
-              <div
-                className="w-7 h-7 rounded-full flex items-center justify-center text-white font-bold text-xs"
-                style={{ background: '#D97757' }}
-              >
-                C
-              </div>
-            </div>
-            <span
-              className="px-3 py-1 rounded-full text-xs font-semibold"
-              style={{ background: '#FCEEE7', color: '#D97757' }}
-            >
-              {chapterTitle}
-            </span>
-            <span
-              style={{ fontSize: 14, fontWeight: 600, color: '#1A1714' }}
-              className="hidden sm:block truncate max-w-[200px] md:max-w-[300px]"
-            >
-              {step.title}
+            {track && (
+              <span className="text-sm font-medium" style={{ color: track.color }}>
+                {track.emoji} {track.title}
+              </span>
+            )}
+            <span className="text-xs text-[#9D9087]">
+              {completedCount}/{seq.length}
             </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <a
               href="https://open.kakao.com/o/gT0uVxJh"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-150 hidden sm:flex"
-              style={{
-                background: '#FEE500',
-                color: '#3C1E1E',
-                fontSize: 13,
-                fontWeight: 600,
-                textDecoration: 'none',
-                border: '1.5px solid #F5DC00',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#F5DC00';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#FEE500';
-              }}
+              className="text-xs px-3 py-1.5 rounded-full font-medium transition-colors"
+              style={{ background: '#FEE500', color: '#3C1E1E' }}
             >
-              💬 질문하기 (카톡)
+              💬 질문하기
             </a>
             <a
-              href="https://claude.ai"
+              href="https://claude.ai/download"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-150"
-              style={{
-                border: '1.5px solid #D4C9BB',
-                color: '#6B6560',
-                fontSize: 13,
-                fontWeight: 500,
-                textDecoration: 'none',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#D97757';
-                e.currentTarget.style.color = '#D97757';
-                e.currentTarget.style.background = '#FCEEE7';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#D4C9BB';
-                e.currentTarget.style.color = '#6B6560';
-                e.currentTarget.style.background = 'transparent';
-              }}
+              className="text-xs px-3 py-1.5 rounded-full border border-[#E8E0D6] text-[#6B6560] hover:border-[#D97757] hover:text-[#D97757] transition-colors"
             >
-              Claude 앱 열기 ↗
+              Claude 앱
             </a>
           </div>
         </div>
 
-        {/* Mobile progress bar */}
-        <div className="md:hidden px-4 py-2" style={{ borderBottom: '1px solid #E8E0D6', background: '#FFFFFF' }}>
-          <div className="flex items-center gap-3">
+        {/* 모바일 진행바 */}
+        <div className="md:hidden px-4 py-2 border-b border-[#E8E0D6] bg-white">
+          <div className="flex items-center justify-between text-xs text-[#9D9087] mb-1">
+            <span>{completedCount}/{seq.length} 완료</span>
+            <span>{Math.round(progress)}%</span>
+          </div>
+          <div className="h-1.5 bg-[#F5F0EB] rounded-full overflow-hidden">
             <div
-              className="flex-1 rounded-full overflow-hidden"
-              style={{ height: 4, background: '#E8E0D6' }}
-            >
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${progressPercent}%`, background: '#D97757' }}
-              />
-            </div>
-            <span style={{ fontSize: 11, color: '#9D9087', whiteSpace: 'nowrap' }}>
-              {completedSteps.length}/20
-            </span>
+              className="h-full rounded-full transition-all duration-500"
+              style={{ width: `${progress}%`, background: track?.color || '#D97757' }}
+            />
           </div>
         </div>
 
-        {/* Step content */}
-        <StepContent step={step} onComplete={handleComplete} />
+        {/* 모듈 콘텐츠 */}
+        <ModuleContent />
       </div>
     </div>
   );
