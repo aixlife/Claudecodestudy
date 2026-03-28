@@ -1,407 +1,262 @@
 import { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { steps } from '../data/steps';
+import { getTrack } from '../data/tracks';
 
 const appTypes = ['웹사이트', 'AI 챗봇', '업무 자동화', '데이터 분석', '기타'];
-const audiences = ['나 혼자 사용', '팀과 함께', '고객에게', '교육 목적'];
-const features = ['AI 대화', '자동화 워크플로우', '정보 시각화', '문서 생성'];
-const techStacks = ['React', 'Next.js', 'Python', '상관없음'];
+const audiences = ['개인 사용', '소규모 팀', '기업/조직', '일반 대중'];
+const features = ['사용자 인증', '데이터베이스', '결제 시스템', 'AI 연동', 'API 연동', '대시보드'];
+const techStacks = ['Next.js + Supabase', 'React + Express', 'Python + FastAPI', 'Flutter', '기타'];
 
 export default function Completion() {
-  const { dreamProject, reset } = useAppStore();
-  const [appType, setAppType] = useState('웹사이트');
-  const [audience, setAudience] = useState('나 혼자 사용');
-  const [feature, setFeature] = useState('AI 대화');
-  const [techStack, setTechStack] = useState('React');
+  const dreamProject = useAppStore((s) => s.dreamProject);
+  const selectedTrack = useAppStore((s) => s.selectedTrack);
+  const completedModules = useAppStore((s) => s.completedModules);
+  const sessionMinutes = useAppStore((s) => s.sessionMinutes);
+  const reset = useAppStore((s) => s.reset);
+
+  const track = selectedTrack ? getTrack(selectedTrack) : null;
+
+  const [selectedApp, setSelectedApp] = useState(appTypes[0]);
+  const [selectedAudience, setSelectedAudience] = useState(audiences[0]);
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [selectedStack, setSelectedStack] = useState(techStacks[0]);
   const [copied, setCopied] = useState(false);
 
-  const generatedPrompt = `${appType}를 만들어줘.
-${audience}을 위한 앱이고,
-핵심 기능은 ${feature}이야.
-기술 스택: ${techStack}
-한국어 UI, 깔끔하고 심플하게 만들어줘.
-CLAUDE.md 먼저 생성하고, Plan Mode로 시작해줘.`;
+  const toggleFeature = (f: string) => {
+    setSelectedFeatures((p) =>
+      p.includes(f) ? p.filter((x) => x !== f) : [...p, f]
+    );
+  };
 
-  const handleCopyPrompt = async () => {
-    await navigator.clipboard.writeText(generatedPrompt);
+  const prompt = `나는 ${dreamProject || '새로운 프로젝트'}를 만들려고 해.
+
+유형: ${selectedApp}
+대상: ${selectedAudience}
+필요 기능: ${selectedFeatures.length > 0 ? selectedFeatures.join(', ') : '미정'}
+기술 스택: ${selectedStack}
+
+Plan Mode로 먼저 전체 구조를 설계해줘.
+설계가 완료되면 단계별로 구현하고,
+각 단계마다 테스트를 포함해줘.`;
+
+  const copyPrompt = () => {
+    navigator.clipboard.writeText(prompt);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
-
-  const stepEmojis: Record<string, string> = {
-    '1-1': '📁', '1-2': '📝', '1-3': '📋', '1-4': '⎋', '1-5': '🖼️', '1-6': '⌨️',
-    '2-1': '🧠', '2-2': '⚡', '2-3': '🔌', '2-4': '📊', '2-5': '🎯', '2-6': '🧪', '2-7': '📋', '2-8': '🔨',
-    '3-1': '🛠️', '3-2': '⚙️', '3-3': '🤖', '3-4': '👥', '3-5': '🔗', '3-6': '🚀',
-  };
-
-  const selectStyle = {
-    border: '1.5px solid #E8E0D6',
-    borderRadius: 10,
-    padding: '10px 14px',
-    fontSize: 14,
-    color: '#1A1714',
-    background: '#FAF9F6',
-    width: '100%',
-    fontFamily: 'inherit',
-    outline: 'none',
-    cursor: 'pointer',
-    appearance: 'none' as const,
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%239D9087' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 12px center',
-    paddingRight: 36,
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: '#FAF9F6', paddingBottom: 60 }}
-    >
-      {/* Progress bar full */}
-      <div className="progress-bar-track">
-        <div className="progress-bar-fill" style={{ width: '100%' }} />
-      </div>
-
-      <div className="max-w-[720px] mx-auto px-6 py-16">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🎉</div>
-          <h1
-            style={{ fontSize: 32, fontWeight: 700, color: '#1A1714', lineHeight: 1.2, marginBottom: 10 }}
-          >
-            모든 여정을 완주했어요!
-          </h1>
-          <p style={{ fontSize: 16, color: '#6B6560' }}>
-            당신은 이제 AI 에이전트를 설계하는 사람입니다.
-          </p>
-        </div>
-
-        {/* Dream project highlight */}
-        {dreamProject && (
-          <div
-            className="rounded-2xl p-6 mb-8 text-center"
-            style={{ background: '#FCEEE7', border: '2px solid #D97757' }}
-          >
-            <div style={{ fontSize: 12, color: '#D97757', fontWeight: 600, marginBottom: 8, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-              나의 목표
-            </div>
-            <div style={{ fontSize: 20, fontWeight: 700, color: '#1A1714' }}>
-              {dreamProject}
-            </div>
+    <div className="min-h-screen bg-[#FAF9F6]">
+      <div className="max-w-[720px] mx-auto px-6 py-12">
+        {/* 완료 후킹 카피 */}
+        {track && (
+          <div className="text-center mb-8">
+            <div className="text-5xl mb-4">🎉</div>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#1A1714] mb-3">
+              트랙 완료!
+            </h1>
+            <p className="text-lg font-medium italic" style={{ color: track.color }}>
+              "{track.hookCopy.completion}"
+            </p>
           </div>
         )}
 
-        {/* Step chips */}
-        <div
-          className="rounded-2xl p-6 mb-8"
-          style={{ background: '#FFFFFF', border: '1px solid #E8E0D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
-        >
-          <div style={{ fontSize: 15, fontWeight: 600, color: '#1A1714', marginBottom: 14 }}>
-            완주한 20단계 🏆
+        {/* 학습 통계 */}
+        <div className="grid grid-cols-3 gap-3 mb-8">
+          <div className="text-center p-4 bg-white rounded-xl border border-[#E8E0D6]">
+            <p className="text-2xl font-bold text-[#D97757]">{completedModules.length}</p>
+            <p className="text-xs text-[#9D9087]">완료 모듈</p>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {steps.map((step) => (
-              <div
-                key={step.id}
-                className="rounded-xl px-3 py-2 flex items-center gap-2"
-                style={{ background: '#E8F5EE', border: '1px solid #2D7D52' }}
-              >
-                <span style={{ fontSize: 16 }}>{stepEmojis[step.id] || '✓'}</span>
-                <div>
-                  <div style={{ fontSize: 10, color: '#2D7D52', fontWeight: 600 }}>Step {step.id}</div>
-                  <div style={{ fontSize: 11, color: '#1A1714', lineHeight: 1.3 }} className="line-clamp-1">
-                    {step.title}
-                  </div>
-                </div>
-                <span style={{ marginLeft: 'auto', color: '#2D7D52', fontSize: 12 }}>✓</span>
-              </div>
-            ))}
+          <div className="text-center p-4 bg-white rounded-xl border border-[#E8E0D6]">
+            <p className="text-2xl font-bold text-[#2D7D52]">{sessionMinutes}</p>
+            <p className="text-xs text-[#9D9087]">학습 시간(분)</p>
           </div>
-        </div>
-
-        {/* Final prompt builder */}
-        <div
-          className="rounded-2xl p-6 mb-8"
-          style={{ background: '#FFFFFF', border: '1px solid #E8E0D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
-        >
-          <div style={{ fontSize: 18, fontWeight: 700, color: '#1A1714', marginBottom: 4 }}>
-            지금 바로 만들어봐요 🚀
-          </div>
-          <p style={{ fontSize: 13, color: '#9D9087', marginBottom: 20 }}>
-            답을 선택하면 맞춤 프롬프트가 자동으로 만들어져요
-          </p>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mb-6">
-            <div>
-              <label style={{ fontSize: 12, color: '#6B6560', fontWeight: 600, marginBottom: 6, display: 'block' }}>
-                어떤 종류의 앱인가요?
-              </label>
-              <select
-                value={appType}
-                onChange={(e) => setAppType(e.target.value)}
-                style={selectStyle}
-              >
-                {appTypes.map((t) => <option key={t}>{t}</option>)}
-              </select>
-            </div>
-            <div>
-              <label style={{ fontSize: 12, color: '#6B6560', fontWeight: 600, marginBottom: 6, display: 'block' }}>
-                누구를 위한 건가요?
-              </label>
-              <select
-                value={audience}
-                onChange={(e) => setAudience(e.target.value)}
-                style={selectStyle}
-              >
-                {audiences.map((a) => <option key={a}>{a}</option>)}
-              </select>
-            </div>
-            <div>
-              <label style={{ fontSize: 12, color: '#6B6560', fontWeight: 600, marginBottom: 6, display: 'block' }}>
-                가장 중요한 기능은?
-              </label>
-              <select
-                value={feature}
-                onChange={(e) => setFeature(e.target.value)}
-                style={selectStyle}
-              >
-                {features.map((f) => <option key={f}>{f}</option>)}
-              </select>
-            </div>
-            <div>
-              <label style={{ fontSize: 12, color: '#6B6560', fontWeight: 600, marginBottom: 6, display: 'block' }}>
-                선호하는 기술 스택은?
-              </label>
-              <select
-                value={techStack}
-                onChange={(e) => setTechStack(e.target.value)}
-                style={selectStyle}
-              >
-                {techStacks.map((t) => <option key={t}>{t}</option>)}
-              </select>
-            </div>
-          </div>
-
-          {/* Generated prompt */}
-          <div className="code-block mb-4 relative">
-            <pre style={{ margin: 0, fontSize: 13 }}>{generatedPrompt}</pre>
-          </div>
-
-          {/* CTA buttons */}
-          <div className="flex gap-3 flex-wrap">
-            <button
-              onClick={handleCopyPrompt}
-              className="flex-1 py-3 rounded-full font-semibold text-white transition-all duration-150"
-              style={{
-                background: copied ? '#2D7D52' : '#D97757',
-                fontSize: 14,
-                cursor: 'pointer',
-                minWidth: 160,
-                fontFamily: 'inherit',
-                boxShadow: '0 4px 12px rgba(217,119,87,0.25)',
-              }}
-              onMouseEnter={(e) => {
-                if (!copied) e.currentTarget.style.background = '#B85C35';
-              }}
-              onMouseLeave={(e) => {
-                if (!copied) e.currentTarget.style.background = '#D97757';
-              }}
-            >
-              {copied ? '복사됨 ✓' : '프롬프트 복사하기 📋'}
-            </button>
-            <a
-              href="https://claude.ai/download"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 rounded-full font-semibold transition-all duration-150"
-              style={{
-                border: '1.5px solid #D4C9BB',
-                color: '#6B6560',
-                fontSize: 14,
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                fontFamily: 'inherit',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#D97757';
-                e.currentTarget.style.color = '#D97757';
-                e.currentTarget.style.background = '#FCEEE7';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#D4C9BB';
-                e.currentTarget.style.color = '#6B6560';
-                e.currentTarget.style.background = 'transparent';
-              }}
-            >
-              Claude Code 다운로드 →
-            </a>
-          </div>
-        </div>
-
-        {/* KakaoTalk CTA */}
-        <div
-          className="rounded-2xl p-6 mb-8"
-          style={{ background: '#FEE500', border: '2px solid #F5DC00' }}
-        >
-          <div className="text-center">
-            <div style={{ fontSize: 18, fontWeight: 700, color: '#3C1E1E', marginBottom: 8 }}>
-              함께 성장하는 커뮤니티에 참여하세요
-            </div>
-            <p style={{ fontSize: 14, color: '#5C4033', marginBottom: 16, lineHeight: 1.6 }}>
-              막히는 부분은 질문하고, 다른 사람의 프로젝트도 구경해보세요.
+          <div className="text-center p-4 bg-white rounded-xl border border-[#E8E0D6]">
+            <p className="text-2xl font-bold" style={{ color: track?.color || '#D97757' }}>
+              {track?.emoji || '🚀'}
             </p>
-            <div className="flex gap-3 justify-center flex-wrap">
-              <a
-                href="https://open.kakao.com/o/gT0uVxJh"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 rounded-full font-semibold transition-all duration-150"
-                style={{
-                  background: '#3C1E1E',
-                  color: '#FEE500',
-                  fontSize: 14,
-                  textDecoration: 'none',
-                  fontFamily: 'inherit',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#2A1515';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#3C1E1E';
-                }}
-              >
-                💬 AI 활용 오픈채팅 참여하기
-              </a>
-              <a
-                href="https://open.kakao.com/o/gKuUoE2h"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 rounded-full font-semibold transition-all duration-150"
-                style={{
-                  background: '#FFFFFF',
-                  color: '#3C1E1E',
-                  fontSize: 14,
-                  textDecoration: 'none',
-                  fontFamily: 'inherit',
-                  border: '2px solid #3C1E1E',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#F5F0EB';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#FFFFFF';
-                }}
-              >
-                💬 실전 프로젝트 채팅방
-              </a>
-            </div>
+            <p className="text-xs text-[#9D9087]">{track?.title || '자유형'}</p>
           </div>
         </div>
 
-        {/* Activity intro section */}
-        <div
-          className="rounded-2xl p-6 mb-8"
-          style={{ background: '#FFFFFF', border: '1px solid #E8E0D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
-        >
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#1A1714', marginBottom: 4 }}>
-            더 깊이 배우고 싶다면
+        {/* 꿈 프로젝트 */}
+        {dreamProject && (
+          <div className="mb-8 p-5 bg-[#FCEEE7] rounded-xl border border-[#D97757]/20">
+            <p className="text-xs text-[#9D9087] mb-1">나의 프로젝트</p>
+            <p className="text-lg font-bold text-[#1A1714]">{dreamProject}</p>
+            <p className="text-sm text-[#6B6560] mt-2">이제 이걸 진짜로 만들어볼 차례예요 👇</p>
           </div>
-          <p style={{ fontSize: 13, color: '#9D9087', marginBottom: 16 }}>
-            AI 에이전틱 엔지니어링 전문가와 함께하세요
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="rounded-xl p-4" style={{ background: '#FAF9F6', border: '1px solid #E8E0D6' }}>
-              <div style={{ fontSize: 20, marginBottom: 8 }}>🏢</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1714', marginBottom: 4 }}>기업 강의 · 컨설팅</div>
-              <div style={{ fontSize: 12, color: '#6B6560', lineHeight: 1.5 }}>
-                Claude Code를 우리 팀에 도입하고 싶다면. B2B 맞춤 교육과 AI 워크플로우 컨설팅을 제공합니다.
+        )}
+
+        {/* 프롬프트 빌더 */}
+        <div className="bg-white rounded-2xl border border-[#E8E0D6] p-6 mb-8">
+          <h2 className="text-lg font-bold text-[#1A1714] mb-4">
+            🛠 나만의 시작 프롬프트 만들기
+          </h2>
+
+          <div className="space-y-4 mb-6">
+            <div>
+              <label className="block text-sm font-medium text-[#6B6560] mb-1.5">앱 유형</label>
+              <div className="flex flex-wrap gap-2">
+                {appTypes.map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setSelectedApp(t)}
+                    className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                      selectedApp === t
+                        ? 'bg-[#D97757] text-white'
+                        : 'bg-[#F5F0EB] text-[#6B6560] hover:bg-[#E8E0D6]'
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
               </div>
             </div>
-            <div className="rounded-xl p-4" style={{ background: '#FAF9F6', border: '1px solid #E8E0D6' }}>
-              <div style={{ fontSize: 20, marginBottom: 8 }}>🎓</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: '#1A1714', marginBottom: 4 }}>온라인 심화 강의</div>
-              <div style={{ fontSize: 12, color: '#6B6560', lineHeight: 1.5 }}>
-                20단계 이후, 실전 프로젝트 중심의 심화 과정으로 진짜 AI 에이전트를 만들어보세요.
+
+            <div>
+              <label className="block text-sm font-medium text-[#6B6560] mb-1.5">대상</label>
+              <div className="flex flex-wrap gap-2">
+                {audiences.map((a) => (
+                  <button
+                    key={a}
+                    onClick={() => setSelectedAudience(a)}
+                    className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                      selectedAudience === a
+                        ? 'bg-[#D97757] text-white'
+                        : 'bg-[#F5F0EB] text-[#6B6560] hover:bg-[#E8E0D6]'
+                    }`}
+                  >
+                    {a}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-[#6B6560] mb-1.5">필요 기능</label>
+              <div className="flex flex-wrap gap-2">
+                {features.map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => toggleFeature(f)}
+                    className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                      selectedFeatures.includes(f)
+                        ? 'bg-[#2D7D52] text-white'
+                        : 'bg-[#F5F0EB] text-[#6B6560] hover:bg-[#E8E0D6]'
+                    }`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-[#6B6560] mb-1.5">기술 스택</label>
+              <div className="flex flex-wrap gap-2">
+                {techStacks.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSelectedStack(s)}
+                    className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                      selectedStack === s
+                        ? 'bg-[#D97757] text-white'
+                        : 'bg-[#F5F0EB] text-[#6B6560] hover:bg-[#E8E0D6]'
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
-          <div className="mt-4 flex gap-3 flex-wrap">
+
+          {/* 생성된 프롬프트 */}
+          <div className="relative">
+            <pre className="code-block p-4 rounded-xl text-sm whitespace-pre-wrap leading-relaxed">
+              {prompt}
+            </pre>
+            <button
+              onClick={copyPrompt}
+              className="absolute top-2 right-2 px-3 py-1 text-xs rounded-md bg-[#D97757] text-white hover:bg-[#B85C35] transition-colors"
+            >
+              {copied ? '복사됨!' : '📋 프롬프트 복사'}
+            </button>
+          </div>
+        </div>
+
+        {/* Claude Code 다운로드 */}
+        <div className="text-center mb-8">
+          <a
+            href="https://claude.ai/download"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-white font-semibold transition-all"
+            style={{ background: '#D97757', boxShadow: '0 4px 12px rgba(217,119,87,0.3)' }}
+          >
+            Claude Code 다운로드 →
+          </a>
+        </div>
+
+        {/* 커뮤니티 CTA */}
+        <div className="bg-white rounded-2xl border border-[#E8E0D6] p-6 mb-8">
+          <h3 className="font-bold text-[#1A1714] mb-4">💬 함께 성장하기</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <a
-              href="https://www.threads.com/@naminsoo_ai"
+              href="https://open.kakao.com/o/gT0uVxJh"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-150"
-              style={{
-                border: '1.5px solid #E8E0D6',
-                color: '#6B6560',
-                fontSize: 13,
-                fontWeight: 500,
-                textDecoration: 'none',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#D97757';
-                e.currentTarget.style.color = '#D97757';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#E8E0D6';
-                e.currentTarget.style.color = '#6B6560';
-              }}
+              className="flex items-center gap-3 p-4 rounded-xl transition-colors"
+              style={{ background: '#FEE500' }}
             >
-              📱 Threads에서 소식 받기
+              <span className="text-xl">💬</span>
+              <div>
+                <p className="font-semibold text-sm" style={{ color: '#3C1E1E' }}>AI 활용 오픈채팅</p>
+                <p className="text-xs" style={{ color: '#5C3C3C' }}>3,000+명이 함께합니다</p>
+              </div>
             </a>
             <a
-              href="mailto:naminsoo@aixlife.co.kr"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-150"
-              style={{
-                border: '1.5px solid #E8E0D6',
-                color: '#6B6560',
-                fontSize: 13,
-                fontWeight: 500,
-                textDecoration: 'none',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#D97757';
-                e.currentTarget.style.color = '#D97757';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#E8E0D6';
-                e.currentTarget.style.color = '#6B6560';
-              }}
-            >
-              ✉️ 강의 · 컨설팅 문의
-            </a>
-            <a
-              href="https://aixlife.co.kr"
+              href="https://open.kakao.com/o/gKuUoE2h"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-150"
-              style={{
-                border: '1.5px solid #E8E0D6',
-                color: '#6B6560',
-                fontSize: 13,
-                fontWeight: 500,
-                textDecoration: 'none',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#D97757';
-                e.currentTarget.style.color = '#D97757';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#E8E0D6';
-                e.currentTarget.style.color = '#6B6560';
-              }}
+              className="flex items-center gap-3 p-4 rounded-xl transition-colors"
+              style={{ background: '#FEE500' }}
             >
-              🏠 aixlife.co.kr
+              <span className="text-xl">💬</span>
+              <div>
+                <p className="font-semibold text-sm" style={{ color: '#3C1E1E' }}>실전 프로젝트 채팅방</p>
+                <p className="text-xs" style={{ color: '#5C3C3C' }}>700+명과 프로젝트 공유</p>
+              </div>
             </a>
           </div>
         </div>
 
-        {/* Restart */}
+        {/* 더 깊이 배우기 */}
+        <div className="bg-white rounded-2xl border border-[#E8E0D6] p-6 mb-8">
+          <h3 className="font-bold text-[#1A1714] mb-4">🎓 더 깊이 배우고 싶다면</h3>
+          <div className="space-y-3">
+            <div className="p-3 rounded-lg bg-[#F5F0EB]">
+              <p className="text-sm font-medium text-[#1A1714]">기업 강의 / 컨설팅</p>
+              <p className="text-xs text-[#6B6560] mt-1">AI 활용 전략, 바이브코딩 워크샵</p>
+            </div>
+            <div className="p-3 rounded-lg bg-[#F5F0EB]">
+              <p className="text-sm font-medium text-[#1A1714]">온라인 심화 강의</p>
+              <p className="text-xs text-[#6B6560] mt-1">에이전틱 엔지니어링 마스터 과정</p>
+            </div>
+          </div>
+          <div className="flex gap-3 mt-4 text-xs">
+            <a href="https://www.threads.com/@naminsoo_ai" target="_blank" rel="noopener noreferrer" className="text-[#D97757] hover:underline">📱 Threads</a>
+            <a href="mailto:naminsoo@aixlife.co.kr" className="text-[#D97757] hover:underline">📧 문의</a>
+            <a href="https://aixlife.co.kr" target="_blank" rel="noopener noreferrer" className="text-[#D97757] hover:underline">🌐 aixlife.co.kr</a>
+          </div>
+        </div>
+
+        {/* 다시 시작 */}
         <div className="text-center">
           <button
             onClick={reset}
-            style={{ fontSize: 13, color: '#9D9087', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'inherit' }}
+            className="px-6 py-2.5 rounded-full border border-[#E8E0D6] text-sm text-[#6B6560] hover:border-[#D97757] hover:text-[#D97757] transition-colors"
           >
             처음부터 다시 해보기
           </button>
