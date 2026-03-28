@@ -22,15 +22,17 @@ const levels: { id: UserLevel; label: string; description: string }[] = [
 ];
 
 export default function ProfileSetup() {
-  const { setProfile, goToScreen } = useAppStore();
+  const { setProfile, goToScreen, setDreamProject } = useAppStore();
   const [nickname, setNickname] = useState('');
   const [selectedLevel, setSelectedLevel] = useState<UserLevel | null>(null);
+  const [project, setProject] = useState('');
 
   const canProceed = nickname.trim().length >= 2 && selectedLevel !== null;
 
   const handleStart = () => {
     if (!canProceed || !selectedLevel) return;
     setProfile(nickname.trim(), selectedLevel);
+    if (project.trim()) setDreamProject(project.trim());
     goToScreen('track-selection');
   };
 
@@ -112,6 +114,24 @@ export default function ProfileSetup() {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* 만들고 싶은 것 (선택) */}
+          <div className="mb-10">
+            <label className="block text-base font-semibold text-[#1A1714] mb-2">
+              만들고 싶은 것
+            </label>
+            <p className="text-sm text-[#9D9087] mb-3">
+              선택사항이에요. 학습 중에 여러분의 프로젝트에 맞는 예시를 보여드려요.
+            </p>
+            <input
+              type="text"
+              value={project}
+              onChange={(e) => setProject(e.target.value)}
+              placeholder="예: 카페 예약 앱, 포트폴리오 사이트, 업무 자동화 도구..."
+              maxLength={50}
+              className="w-full px-5 py-4 bg-white border border-[#E8E0D6] rounded-xl text-lg text-[#1A1714] placeholder:text-[#9D9087] focus:outline-none focus:border-[#D97757] transition-colors"
+            />
           </div>
 
           {/* 시작 버튼 */}

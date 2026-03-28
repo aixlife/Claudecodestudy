@@ -129,8 +129,6 @@ export default function Onboarding() {
   }, []);
 
   const handleStart = () => {
-    // 임의의 기본값으로 프로젝트 초기화 후 다음 화면으로 이동
-    setDreamProject('Claude Code Study Project');
     goToScreen('profile-setup');
   };
 
