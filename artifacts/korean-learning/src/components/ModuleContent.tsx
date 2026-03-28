@@ -62,6 +62,18 @@ function KeywordsSection({ keywords }: { keywords: Keyword[] }) {
           </div>
         ))}
       </div>
+      {/* 스스로 찾아보기 — Perplexity 링크 */}
+      <div className="mt-3 text-center">
+        <a
+          href={`https://www.perplexity.ai/search?q=${encodeURIComponent(keywords.map(k => k.term).join(', ') + ' 프로그래밍 용어 설명')}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-xs text-[#9D9087] hover:text-[#D97757] transition-colors"
+        >
+          <span>🔍</span>
+          <span>여기 없는 용어는 <span className="underline">스스로 찾아보기</span></span>
+        </a>
+      </div>
     </div>
   );
 }
