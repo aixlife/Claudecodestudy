@@ -17,6 +17,7 @@ interface AppState {
 
   // 진행 상태
   completedModules: string[];
+  completedTracks: string[];
   gateResponses: Record<string, string>;
 
   // 세션
@@ -42,6 +43,7 @@ interface AppState {
   getNextModuleId: () => string | undefined;
   isModuleCompleted: (moduleId: string) => boolean;
   isModuleAccessible: (moduleId: string) => boolean;
+  isTrackCompleted: (trackId: string) => boolean;
 }
 
 export const useAppStore = create<AppState>()(
@@ -54,6 +56,7 @@ export const useAppStore = create<AppState>()(
       selectedTrack: null,
       currentModuleId: 'C0',
       completedModules: [],
+      completedTracks: [],
       gateResponses: {},
       startTime: null,
       sessionMinutes: 0,
@@ -77,9 +80,19 @@ export const useAppStore = create<AppState>()(
       setCurrentModule: (moduleId) => set({ currentModuleId: moduleId }),
 
       completeModule: (moduleId) => {
-        const { completedModules } = get();
+        const { completedModules, completedTracks, selectedTrack } = get();
         if (!completedModules.includes(moduleId)) {
-          set({ completedModules: [...completedModules, moduleId] });
+          const newCompleted = [...completedModules, moduleId];
+          const updates: Partial<AppState> = { completedModules: newCompleted };
+
+          // 트랙 완료 자동 감지
+          if (selectedTrack && !completedTracks.includes(selectedTrack)) {
+            const track = getTrack(selectedTrack);
+            if (track && track.moduleSequence.every((id) => newCompleted.includes(id))) {
+              updates.completedTracks = [...completedTracks, selectedTrack];
+            }
+          }
+          set(updates);
         }
       },
 
@@ -108,6 +121,7 @@ export const useAppStore = create<AppState>()(
           selectedTrack: null,
           currentModuleId: 'C0',
           completedModules: [],
+          completedTracks: [],
           gateResponses: {},
           startTime: null,
           sessionMinutes: 0,
@@ -143,13 +157,18 @@ export const useAppStore = create<AppState>()(
       },
 
       isModuleAccessible: (moduleId) => {
-        const { completedModules } = get();
+        const { completedModules, completedTracks, selectedTrack } = get();
+        // 완료된 트랙이면 모든 모듈 자유 접근
+        if (selectedTrack && completedTracks.includes(selectedTrack)) return true;
         const seq = get().getModuleSequence();
         const idx = seq.indexOf(moduleId);
         if (idx === 0) return true;
         if (idx === -1) return false;
-        // 이전 모듈이 완료되었으면 접근 가능
         return completedModules.includes(seq[idx - 1]);
+      },
+
+      isTrackCompleted: (trackId) => {
+        return get().completedTracks.includes(trackId);
       },
     }),
     {
@@ -162,6 +181,7 @@ export const useAppStore = create<AppState>()(
         selectedTrack: state.selectedTrack,
         currentModuleId: state.currentModuleId,
         completedModules: state.completedModules,
+        completedTracks: state.completedTracks,
         gateResponses: state.gateResponses,
         startTime: state.startTime,
         sessionMinutes: state.sessionMinutes,

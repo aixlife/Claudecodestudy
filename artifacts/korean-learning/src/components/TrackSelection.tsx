@@ -8,6 +8,7 @@ export default function TrackSelection() {
   const selectTrack = useAppStore((s) => s.selectTrack);
   const startSession = useAppStore((s) => s.startSession);
   const goToScreen = useAppStore((s) => s.goToScreen);
+  const isTrackCompleted = useAppStore((s) => s.isTrackCompleted);
 
   const handleSelectTrack = (trackId: TrackId) => {
     selectTrack(trackId);
@@ -56,13 +57,18 @@ export default function TrackSelection() {
                 onClick={() => handleSelectTrack(track.id)}
                 className="group text-left p-6 bg-white rounded-2xl border-2 border-[#E8E0D6] hover:border-[#D97757] transition-all duration-200 hover:shadow-lg hover:shadow-[#D97757]/10"
               >
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="font-bold text-xl text-[#1A1714] group-hover:text-[#D97757] transition-colors">
                       {track.title}
                     </h3>
                     <p className="text-base text-[#9D9087]">{track.subtitle}</p>
                   </div>
+                  {isTrackCompleted(track.id) && (
+                    <span className="px-3 py-1 bg-[#2D7D52] text-white text-sm font-medium rounded-full flex-shrink-0">
+                      완료
+                    </span>
+                  )}
                 </div>
 
                 <p className="text-[#6B6560] text-base mb-5 leading-relaxed">
