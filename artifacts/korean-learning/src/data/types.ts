@@ -79,4 +79,6 @@ export interface Track {
 }
 
 // ===== 스크린 =====
-export type Screen = 'onboarding' | 'track-selection' | 'learning' | 'completion';
+export type Screen = 'onboarding' | 'profile-setup' | 'track-selection' | 'learning' | 'completion';
+
+export type UserLevel = 'beginner' | 'intermediate' | 'advanced';

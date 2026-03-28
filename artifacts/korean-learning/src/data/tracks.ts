@@ -155,7 +155,7 @@ const dashboardTrackModules: Module[] = [
 export const tracks: Track[] = [
   {
     id: 'automation',
-    emoji: '⚙️',
+    emoji: '',
     title: '업무 자동화 도구',
     subtitle: '반복 업무를 자동화하는 도구 만들기',
     description: '매일 반복하는 엑셀 정리, 데이터 수집, 보고서 작성 같은 업무를 자동화해요. 가장 실용적인 트랙이에요.',
@@ -170,7 +170,7 @@ export const tracks: Track[] = [
   },
   {
     id: 'landing',
-    emoji: '🌐',
+    emoji: '',
     title: '랜딩/홈페이지',
     subtitle: '나만의 웹사이트 만들기',
     description: '서비스 소개, 포트폴리오, 사이드 프로젝트 홈페이지를 만들어요. 가장 빠르게 결과물을 볼 수 있는 트랙이에요.',
@@ -185,7 +185,7 @@ export const tracks: Track[] = [
   },
   {
     id: 'dashboard',
-    emoji: '📊',
+    emoji: '',
     title: '데이터 대시보드',
     subtitle: '데이터를 시각화하는 대시보드 만들기',
     description: '매출, 방문자, KPI 같은 데이터를 차트와 그래프로 한눈에 볼 수 있는 대시보드를 만들어요.',
@@ -200,7 +200,7 @@ export const tracks: Track[] = [
   },
   {
     id: 'freestyle',
-    emoji: '🚀',
+    emoji: '',
     title: '자유형',
     subtitle: '내가 원하는 걸 자유롭게 만들기',
     description: '특정 트랙에 맞지 않는 프로젝트를 자유롭게 만들어요. 모든 선택적 모듈에 접근할 수 있어요.',

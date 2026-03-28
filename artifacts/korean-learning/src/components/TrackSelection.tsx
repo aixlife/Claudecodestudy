@@ -1,11 +1,13 @@
 import { useAppStore } from '../store/useAppStore';
 import { tracks } from '../data/tracks';
 import type { TrackId } from '../data/types';
+import Footer from './Footer';
 
 export default function TrackSelection() {
   const dreamProject = useAppStore((s) => s.dreamProject);
   const selectTrack = useAppStore((s) => s.selectTrack);
   const startSession = useAppStore((s) => s.startSession);
+  const goToScreen = useAppStore((s) => s.goToScreen);
 
   const handleSelectTrack = (trackId: TrackId) => {
     selectTrack(trackId);
@@ -16,9 +18,14 @@ export default function TrackSelection() {
     <div className="min-h-screen bg-[#FAF9F6] flex flex-col">
       {/* 헤더 */}
       <div className="w-full border-b border-[#E8E0D6] bg-white/80 backdrop-blur-sm">
-        <div className="max-w-[900px] mx-auto px-6 py-4 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#D97757] flex items-center justify-center text-white font-bold text-sm">C</div>
-          <span className="font-semibold text-[#1A1714]">바이브코딩 마스터클래스</span>
+        <div className="max-w-[900px] mx-auto px-6 py-4 flex items-center justify-between">
+          <span className="font-bold text-[#D97757] tracking-tight uppercase text-lg">Claude Code Study</span>
+          <button
+            onClick={() => goToScreen('profile-setup')}
+            className="text-sm text-[#9D9087] hover:text-[#D97757] transition-colors"
+          >
+            &larr; Back
+          </button>
         </div>
       </div>
 
@@ -50,7 +57,6 @@ export default function TrackSelection() {
                 className="group text-left p-6 bg-white rounded-2xl border-2 border-[#E8E0D6] hover:border-[#D97757] transition-all duration-200 hover:shadow-lg hover:shadow-[#D97757]/10"
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">{track.emoji}</span>
                   <div>
                     <h3 className="font-bold text-lg text-[#1A1714] group-hover:text-[#D97757] transition-colors">
                       {track.title}
@@ -87,9 +93,10 @@ export default function TrackSelection() {
           </div>
 
           {/* 하단 안내 */}
-          <p className="text-center text-sm text-[#9D9087] mt-8">
+          <p className="text-center text-sm text-[#9D9087] mt-8 mb-8">
             트랙은 나중에 변경할 수 있어요. 일단 끌리는 걸로 시작해보세요!
           </p>
+          <Footer />
         </div>
       </div>
     </div>

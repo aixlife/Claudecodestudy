@@ -23,15 +23,13 @@ export default function Sidebar() {
       {/* 로고 */}
       <div className="p-4 border-b border-[#E8E0D6]">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[#D97757] flex items-center justify-center text-white font-bold text-xs">C</div>
-          <span className="font-semibold text-sm text-[#1A1714]">바이브코딩</span>
+          <span className="font-bold text-sm text-[#D97757] uppercase tracking-tight">Claude Code Study</span>
         </div>
       </div>
 
       {/* 트랙 정보 */}
       <div className="p-4 border-b border-[#E8E0D6]">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-xl">{track.emoji}</span>
           <span className="font-semibold text-sm" style={{ color: track.color }}>{track.title}</span>
         </div>
         {dreamProject && (
@@ -107,9 +105,9 @@ export default function Sidebar() {
           })}
         </div>
 
-        {/* 완료 스타 */}
+        {/* 완료 표시 */}
         {completedCount === seq.length && seq.length > 0 && (
-          <div className="text-center mt-4 text-2xl">⭐</div>
+          <div className="text-center mt-4 text-[#D97757] font-semibold">Done</div>
         )}
       </div>
     </aside>

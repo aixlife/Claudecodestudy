@@ -1,12 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { TrackId, Screen } from '../data/types';
+import type { TrackId, Screen, UserLevel } from '../data/types';
 import { getModule } from '../data/modules';
 import { getTrack, getTrackModule } from '../data/tracks';
 
 interface AppState {
   // 사용자 정보
   dreamProject: string;
+  nickname: string;
+  level: UserLevel | null;
 
   // 화면/네비게이션
   screen: Screen;
@@ -23,6 +25,7 @@ interface AppState {
 
   // 액션
   setDreamProject: (project: string) => void;
+  setProfile: (nickname: string, level: UserLevel) => void;
   goToScreen: (screen: Screen) => void;
   selectTrack: (trackId: TrackId) => void;
   setCurrentModule: (moduleId: string) => void;
@@ -45,6 +48,8 @@ export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
       dreamProject: '',
+      nickname: '',
+      level: null,
       screen: 'onboarding',
       selectedTrack: null,
       currentModuleId: 'C0',
@@ -54,6 +59,8 @@ export const useAppStore = create<AppState>()(
       sessionMinutes: 0,
 
       setDreamProject: (project) => set({ dreamProject: project }),
+
+      setProfile: (nickname, level) => set({ nickname, level }),
 
       goToScreen: (screen) => set({ screen }),
 
@@ -95,6 +102,8 @@ export const useAppStore = create<AppState>()(
       reset: () =>
         set({
           dreamProject: '',
+          nickname: '',
+          level: null,
           screen: 'onboarding',
           selectedTrack: null,
           currentModuleId: 'C0',

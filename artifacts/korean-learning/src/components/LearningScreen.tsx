@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import ModuleContent from './ModuleContent';
 import { useAppStore } from '../store/useAppStore';
 import { getTrack } from '../data/tracks';
+import { usePresence } from '../hooks/usePresence';
 
 export default function LearningScreen() {
   const startSession = useAppStore((s) => s.startSession);
@@ -10,7 +11,11 @@ export default function LearningScreen() {
   const selectedTrack = useAppStore((s) => s.selectedTrack);
   const completedModules = useAppStore((s) => s.completedModules);
   const getModuleSequence = useAppStore((s) => s.getModuleSequence);
-  const currentModuleId = useAppStore((s) => s.currentModuleId);
+  const goToScreen = useAppStore((s) => s.goToScreen);
+  const nickname = useAppStore((s) => s.nickname);
+  const level = useAppStore((s) => s.level);
+
+  const { activeCount, isConnected } = usePresence(nickname, level || 'beginner');
 
   // 세션 타이머
   useEffect(() => {
@@ -42,14 +47,28 @@ export default function LearningScreen() {
         {/* 상단 바 */}
         <div className="h-12 border-b border-[#E8E0D6] bg-white/80 backdrop-blur-sm flex items-center justify-between px-4 flex-shrink-0">
           <div className="flex items-center gap-3">
+            {/* 뒤로가기 */}
+            <button
+              onClick={() => goToScreen('track-selection')}
+              className="text-sm text-[#9D9087] hover:text-[#D97757] transition-colors"
+            >
+              &larr;
+            </button>
             {track && (
               <span className="text-sm font-medium" style={{ color: track.color }}>
-                {track.emoji} {track.title}
+                {track.title}
               </span>
             )}
             <span className="text-xs text-[#9D9087]">
               {completedCount}/{seq.length}
             </span>
+            {/* 실시간 학습자 수 */}
+            {isConnected && activeCount > 0 && (
+              <span className="text-xs text-[#2D7D52] font-medium">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#2D7D52] mr-1 animate-pulse" />
+                {activeCount}명 학습 중
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-3">
             <a
@@ -59,7 +78,7 @@ export default function LearningScreen() {
               className="text-xs px-3 py-1.5 rounded-full font-medium transition-colors"
               style={{ background: '#FEE500', color: '#3C1E1E' }}
             >
-              💬 질문하기
+              질문하기
             </a>
             <a
               href="https://claude.ai/download"
