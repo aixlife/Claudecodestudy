@@ -257,15 +257,17 @@ export const commonModules: Module[] = [
       },
     ],
     keywords: [
-      { term: 'Plan Mode', explanation: '건축가가 벽 쌓기 전에 설계도 먼저 그리는 것처럼, 클로드가 코드를 작성하는 대신 계획서를 먼저 보여주는 모드예요.' },
-      { term: '드래그앤드롭', explanation: '파일을 마우스로 꾹 누른 채 끌어서 터미널 창에 올려놓는 동작이에요. 사진을 이렇게 가져다 놓으면 바로 첨부돼요.' },
-      { term: 'Mermaid 다이어그램', explanation: '텍스트로 그림을 그리는 마법이에요. "A → B → C"라고 쓰면 자동으로 화살표 흐름도가 만들어져요.' },
+      { term: 'Plan Mode', explanation: '건축가가 벽 쌓기 전에 설계도 먼저 그리는 것처럼, 클로드가 코드를 작성하는 대신 계획서를 먼저 보여주는 모드예요. Shift+Tab 키로 켤 수 있어요.' },
+      { term: '/ (슬래시 커맨드)', explanation: '대화창에 / 를 입력하면 사용할 수 있는 명령 목록이 뜹니다. 원하는 명령을 선택하고 Tab 키를 누르면 적용돼요. 예: /plan 입력 → 목록에서 선택 → Tab → 원하는 내용 이어 쓰기' },
+      { term: '드래그앤드롭', explanation: '파일을 마우스로 꾹 누른 채 끌어서 대화창에 올려놓는 동작이에요. 사진을 이렇게 가져다 놓으면 바로 첨부돼요.' },
+      { term: 'Mermaid 다이어그램', explanation: '텍스트로 그림을 그리는 방법이에요. "A → B → C"라고 쓰면 자동으로 화살표 흐름도가 만들어져요.' },
     ],
     gate: {
       type: 'execute',
-      prompt: 'Plan Mode를 사용해보셨나요?',
+      prompt: 'Plan Mode와 슬래시 커맨드를 사용해보셨나요?',
       checkItems: [
         'Shift+Tab으로 Plan Mode를 켜봤다',
+        '/ 를 입력해서 커맨드 목록을 확인하고 Tab으로 선택해봤다',
         '계획을 확인한 후 승인해봤다',
       ],
     },
@@ -275,7 +277,7 @@ export const commonModules: Module[] = [
     id: 'C5',
     title: '디버깅과 오류 해결',
     metaphor: '불량품 검수 — 문제가 생기면 에러 로그를 그대로 보여주세요',
-    description: 'Escape로 멈추고, 에러 로그를 그대로 붙여넣고, 테스트로 품질을 잡아요. AI 코딩의 안전망이에요.',
+    description: '잘못 가고 있으면 멈추는 법, 에러가 나면 그대로 보여주는 법, 테스트로 품질 잡는 법. AI 코딩의 안전망이에요.',
     difficulty: 'practical',
     time: '약 7분',
     insight: 'AI가 수백 줄을 바꿔도 내가 다 못 봄 → 테스트가 유일한 품질 안전망',
@@ -283,7 +285,7 @@ export const commonModules: Module[] = [
       question: '클로드가 엉뚱한 방향으로 코드를 쓰고 있다면?',
       options: [
         { text: '끝까지 기다려본다' },
-        { text: 'Escape로 즉시 멈추고 방향을 수정한다' },
+        { text: '키보드 Esc 키로 즉시 멈추고 방향을 수정한다' },
         { text: '새 세션을 시작한다' },
       ],
       correctIndex: 1,
@@ -291,10 +293,11 @@ export const commonModules: Module[] = [
     },
     codeBlocks: [
       {
-        label: 'Escape 연습',
+        label: '멈추기 연습 (Esc 키)',
         code: `1. 아무 명령이나 입력 (예: 간단한 버튼 만들어줘)
-2. 실행 중간에 Escape 한 번 → 중단 확인
-3. Escape 한 번 더 → 이전 프롬프트로 되감기 확인`,
+2. 클로드가 작업하는 중간에 키보드 왼쪽 위 Esc 키 한 번 누르기 → 작업이 멈춤
+3. Esc 한 번 더 → 이전 대화로 되돌아감`,
+        tip: 'Esc 키는 키보드 맨 왼쪽 위에 있어요. 클로드가 이상한 방향으로 가고 있으면 언제든 눌러서 멈추세요.',
       },
       {
         label: '에러 발생 시 — 로그 그대로 붙여넣기',
@@ -310,19 +313,19 @@ export const commonModules: Module[] = [
       },
     ],
     keywords: [
-      { term: 'Escape', explanation: '달리는 차의 비상 정지 버튼이에요. 클로드가 엉뚱한 방향으로 달릴 때 Escape를 누르면 즉시 멈춰요.' },
-      { term: 'Thinking Log', explanation: '클로드가 답하기 전에 혼자 생각하는 과정이 보이는 창이에요. 이상한 가정을 하고 있으면 Escape로 미리 잡을 수 있어요.' },
+      { term: 'Esc 키 (비상 정지)', explanation: '키보드 왼쪽 맨 위에 있는 키예요. 달리는 차의 비상 정지 버튼처럼, 클로드가 엉뚱한 방향으로 코드를 쓰고 있을 때 누르면 즉시 멈춰요. 한 번 더 누르면 이전 상태로 되돌아가요.' },
+      { term: 'Thinking Log (생각 과정)', explanation: '클로드가 답하기 전에 혼자 생각하는 과정이 보이는 창이에요. "이 방향이 맞나?" 확인하기 좋아요. 이상한 가정을 하고 있으면 Esc 키로 미리 잡을 수 있어요.' },
       { term: '유닛 테스트', explanation: '공장에서 제품 하나씩 품질 검사하듯이, 기능 하나하나가 제대로 작동하는지 자동으로 확인하는 검사예요.' },
     ],
     gate: {
       type: 'execute',
-      prompt: 'Escape와 에러 로그 붙여넣기를 실습해보셨나요?',
+      prompt: 'Esc 키와 에러 로그 붙여넣기를 실습해보셨나요?',
       checkItems: [
-        'Escape로 실행을 중단해봤다',
+        'Esc 키로 실행을 중단해봤다',
         '에러 로그를 클로드에 붙여넣어봤다',
       ],
     },
-    ahaMessage: 'Escape는 실수를 0원으로 되돌리는 마법 버튼이에요!',
+    ahaMessage: 'Esc 키는 실수를 0원으로 되돌리는 마법 버튼이에요!',
   },
   {
     id: 'C6',

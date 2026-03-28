@@ -14,6 +14,7 @@ export default function Completion() {
   const completedModules = useAppStore((s) => s.completedModules);
   const sessionMinutes = useAppStore((s) => s.sessionMinutes);
   const reset = useAppStore((s) => s.reset);
+  const goToScreen = useAppStore((s) => s.goToScreen);
 
   const track = selectedTrack ? getTrack(selectedTrack) : null;
 
@@ -189,13 +190,13 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
         {/* Claude Code 다운로드 */}
         <div className="text-center mb-8">
           <a
-            href="https://claude.ai/download"
+            href="https://claude.ai"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-white font-semibold transition-all"
             style={{ background: '#D97757', boxShadow: '0 4px 12px rgba(217,119,87,0.3)' }}
           >
-            Claude Code 다운로드 →
+            Claude Code 웹에서 시작하기 →
           </a>
         </div>
 
@@ -253,10 +254,10 @@ Plan Mode로 먼저 전체 구조를 설계해줘.
         {/* 다시 시작 */}
         <div className="text-center mb-12">
           <button
-            onClick={reset}
+            onClick={() => { reset(); goToScreen('track-selection'); }}
             className="px-6 py-2.5 rounded-full border border-[#E8E0D6] text-sm text-[#6B6560] hover:border-[#D97757] hover:text-[#D97757] transition-colors"
           >
-            처음부터 다시 해보기
+            다른 트랙으로 도전하기
           </button>
         </div>
       </div>
