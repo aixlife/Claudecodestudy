@@ -45,46 +45,44 @@ export default function LearningScreen() {
       {/* 메인 영역 */}
       <div className="flex-1 flex flex-col min-h-0">
         {/* 상단 바 */}
-        <div className="h-12 border-b border-[#E8E0D6] bg-white/80 backdrop-blur-sm flex items-center justify-between px-4 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            {/* 뒤로가기 */}
+        <div className="h-11 border-b border-[#E8E0D6] bg-white/80 backdrop-blur-sm flex items-center justify-between px-3 md:px-4 flex-shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
             <button
               onClick={() => goToScreen('track-selection')}
-              className="text-sm text-[#9D9087] hover:text-[#D97757] transition-colors"
+              className="text-sm text-[#9D9087] hover:text-[#D97757] transition-colors flex-shrink-0"
             >
               &larr;
             </button>
             {track && (
-              <span className="text-sm font-medium" style={{ color: track.color }}>
+              <span className="text-xs md:text-sm font-medium truncate" style={{ color: track.color }}>
                 {track.title}
               </span>
             )}
-            <span className="text-xs text-[#9D9087]">
+            <span className="text-xs text-[#9D9087] flex-shrink-0">
               {completedCount}/{seq.length}
             </span>
-            {/* 실시간 학습자 수 */}
             {isConnected && activeCount > 0 && (
-              <span className="text-xs text-[#2D7D52] font-medium">
+              <span className="hidden sm:inline-flex items-center text-xs text-[#2D7D52] font-medium flex-shrink-0">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#2D7D52] mr-1 animate-pulse" />
-                {activeCount}명 학습 중
+                {activeCount}명
               </span>
             )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <a
               href="https://open.kakao.com/o/gT0uVxJh"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs px-3 py-1.5 rounded-full font-medium transition-colors"
+              className="text-xs px-2.5 py-1 rounded-full font-medium transition-colors"
               style={{ background: '#FEE500', color: '#3C1E1E' }}
             >
-              질문하기
+              질문
             </a>
             <a
               href="https://claude.ai/download"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs px-3 py-1.5 rounded-full border border-[#E8E0D6] text-[#6B6560] hover:border-[#D97757] hover:text-[#D97757] transition-colors"
+              className="hidden md:inline-block text-xs px-2.5 py-1 rounded-full border border-[#E8E0D6] text-[#6B6560] hover:border-[#D97757] hover:text-[#D97757] transition-colors"
             >
               Claude 앱
             </a>
@@ -95,7 +93,15 @@ export default function LearningScreen() {
         <div className="md:hidden px-4 py-2 border-b border-[#E8E0D6] bg-white">
           <div className="flex items-center justify-between text-xs text-[#9D9087] mb-1">
             <span>{completedCount}/{seq.length} 완료</span>
-            <span>{Math.round(progress)}%</span>
+            <div className="flex items-center gap-2">
+              {isConnected && activeCount > 0 && (
+                <span className="text-[#2D7D52] font-medium">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#2D7D52] mr-0.5 animate-pulse" />
+                  {activeCount}명
+                </span>
+              )}
+              <span>{Math.round(progress)}%</span>
+            </div>
           </div>
           <div className="h-1.5 bg-[#F5F0EB] rounded-full overflow-hidden">
             <div
