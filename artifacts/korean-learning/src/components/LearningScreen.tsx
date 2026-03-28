@@ -82,6 +82,11 @@ export default function LearningScreen() {
                 </span>
               )
             )}
+            {nickname && (
+              <span className="hidden lg:inline text-sm text-[#D97757] font-medium flex-shrink-0">
+                {nickname}님, 끝까지 화이팅!
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
             <a
