@@ -35,23 +35,23 @@ function CodeBlockView({ block }: { block: CodeBlock }) {
   };
 
   return (
-    <div className="mb-4">
+    <div className="mb-5">
       {block.label && (
-        <p className="text-xs font-semibold text-[#6B6560] mb-1.5">{block.label}</p>
+        <p className="text-sm font-semibold text-[#6B6560] mb-2">{block.label}</p>
       )}
       <div className="relative group">
-        <pre className="code-block p-4 rounded-xl text-sm overflow-x-auto whitespace-pre-wrap leading-relaxed">
+        <pre className="code-block p-5 rounded-xl text-base overflow-x-auto whitespace-pre-wrap leading-relaxed">
           {block.code}
         </pre>
         <button
           onClick={copy}
-          className="absolute top-2 right-2 px-2 py-1 text-xs rounded-md bg-[#2A2520] text-[#9D9087] hover:text-white transition-colors opacity-0 group-hover:opacity-100"
+          className="absolute top-3 right-3 px-3 py-1.5 text-sm rounded-md bg-[#2A2520] text-[#9D9087] hover:text-white transition-colors opacity-0 group-hover:opacity-100"
         >
           {copied ? '복사됨!' : '복사'}
         </button>
       </div>
       {block.tip && (
-        <p className="mt-1.5 text-xs text-[#9D9087] leading-relaxed">Tip: {block.tip}</p>
+        <p className="mt-2 text-sm text-[#9D9087] leading-relaxed">Tip: {block.tip}</p>
       )}
     </div>
   );
@@ -62,20 +62,20 @@ function KeywordsSection({ keywords }: { keywords: Keyword[] }) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   return (
-    <div className="mt-6">
-      <p className="text-xs font-semibold text-[#9D9087] mb-2">용어 설명</p>
-      <div className="space-y-1.5">
+    <div className="mt-8">
+      <p className="text-sm font-semibold text-[#9D9087] mb-3">용어 설명</p>
+      <div className="space-y-2">
         {keywords.map((kw) => (
           <div key={kw.term} className="rounded-lg border border-[#E8E0D6] overflow-hidden">
             <button
               onClick={() => setExpanded((p) => ({ ...p, [kw.term]: !p[kw.term] }))}
-              className="w-full text-left px-3 py-2 flex items-center justify-between text-sm hover:bg-[#F5F0EB] transition-colors"
+              className="w-full text-left px-4 py-3 flex items-center justify-between text-base hover:bg-[#F5F0EB] transition-colors"
             >
               <span className="font-medium text-[#D97757]">{kw.term}</span>
-              <span className="text-[#9D9087] text-xs">{expanded[kw.term] ? '▲' : '▼'}</span>
+              <span className="text-[#9D9087] text-sm">{expanded[kw.term] ? '▲' : '▼'}</span>
             </button>
             {expanded[kw.term] && (
-              <div className="px-3 pb-2.5 text-xs text-[#6B6560] leading-relaxed border-t border-[#E8E0D6] pt-2">
+              <div className="px-4 pb-3 text-sm text-[#6B6560] leading-relaxed border-t border-[#E8E0D6] pt-3">
                 {kw.explanation}
               </div>
             )}
@@ -83,12 +83,12 @@ function KeywordsSection({ keywords }: { keywords: Keyword[] }) {
         ))}
       </div>
       {/* 스스로 찾아보기 — Perplexity 링크 */}
-      <div className="mt-3 text-center">
+      <div className="mt-4 text-center">
         <a
           href={`https://www.perplexity.ai/search?q=${encodeURIComponent(keywords.map(k => k.term).join(', ') + ' 프로그래밍 용어 설명')}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs text-[#9D9087] hover:text-[#D97757] transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-[#9D9087] hover:text-[#D97757] transition-colors"
         >
           <span>여기 없는 용어는 <span className="underline">스스로 찾아보기</span></span>
         </a>
@@ -102,10 +102,10 @@ function ThinkFirstQuiz({ thinkFirst }: { thinkFirst: NonNullable<Module['thinkF
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className="mb-6 p-5 bg-white rounded-xl border border-[#E8E0D6]">
-      <p className="text-xs font-semibold text-[#D97757] mb-2">먼저 생각해보기</p>
-      <p className="font-medium text-[#1A1714] mb-3">{thinkFirst.question}</p>
-      <div className="space-y-2">
+    <div className="mb-8 p-6 bg-white rounded-xl border border-[#E8E0D6]">
+      <p className="text-sm font-semibold text-[#D97757] mb-2">먼저 생각해보기</p>
+      <p className="text-lg font-medium text-[#1A1714] mb-4">{thinkFirst.question}</p>
+      <div className="space-y-3">
         {thinkFirst.options.map((opt, i) => {
           const isCorrect = i === thinkFirst.correctIndex;
           const isSelected = selected === i;
@@ -116,7 +116,7 @@ function ThinkFirstQuiz({ thinkFirst }: { thinkFirst: NonNullable<Module['thinkF
               key={i}
               onClick={() => selected === null && setSelected(i)}
               disabled={selected !== null}
-              className={`w-full text-left p-3 rounded-lg border-2 transition-all text-sm ${
+              className={`w-full text-left p-4 rounded-lg border-2 transition-all text-base ${
                 showResult && isSelected && isCorrect
                   ? 'border-[#2D7D52] bg-[#E8F5EE]'
                   : showResult && isSelected && !isCorrect
@@ -132,7 +132,7 @@ function ThinkFirstQuiz({ thinkFirst }: { thinkFirst: NonNullable<Module['thinkF
         })}
       </div>
       {selected !== null && (
-        <div className="mt-3 p-3 bg-[#E8F5EE] rounded-lg text-sm text-[#2D7D52] slide-up">
+        <div className="mt-4 p-4 bg-[#E8F5EE] rounded-lg text-base text-[#2D7D52] slide-up">
           {thinkFirst.explanation}
         </div>
       )}
@@ -221,7 +221,7 @@ export default function ModuleContent() {
         </div>
       )}
 
-      <div className="max-w-[720px] mx-auto px-6 py-8">
+      <div className="max-w-[900px] mx-auto px-8 py-10">
         {/* 트랙 진입 후킹 카피 (첫 모듈에서만) */}
         {idx === 0 && track && (
           <div className="mb-6 p-4 rounded-xl border-2 border-dashed" style={{ borderColor: track.color + '40', backgroundColor: track.color + '08' }}>
@@ -230,57 +230,57 @@ export default function ModuleContent() {
         )}
 
         {/* 배지 */}
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <span className="text-xs px-2 py-0.5 rounded-full bg-[#F5F0EB] text-[#9D9087] font-medium">
+        <div className="flex flex-wrap items-center gap-3 mb-5">
+          <span className="text-sm px-3 py-1 rounded-full bg-[#F5F0EB] text-[#9D9087] font-medium">
             {idx + 1}/{total}
           </span>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-[#F5F0EB] text-[#9D9087]">
+          <span className="text-sm px-3 py-1 rounded-full bg-[#F5F0EB] text-[#9D9087]">
             {difficultyLabel}
           </span>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-[#F5F0EB] text-[#9D9087]">
+          <span className="text-sm px-3 py-1 rounded-full bg-[#F5F0EB] text-[#9D9087]">
             {mod.time}
           </span>
           {mod.isOptional && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-[#FCEEE7] text-[#D97757]">선택</span>
+            <span className="text-sm px-3 py-1 rounded-full bg-[#FCEEE7] text-[#D97757]">선택</span>
           )}
         </div>
 
         {/* 제목 */}
-        <h1 className="text-2xl font-bold text-[#1A1714] mb-2">{mod.title}</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-[#1A1714] mb-3">{mod.title}</h1>
         {mod.metaphor && (
-          <p className="text-sm text-[#D97757] italic mb-4">{mod.metaphor}</p>
+          <p className="text-base text-[#D97757] italic mb-5">{mod.metaphor}</p>
         )}
 
         {/* 설명 */}
-        <p className="text-[#6B6560] leading-relaxed mb-6">{mod.description}</p>
+        <p className="text-lg text-[#6B6560] leading-relaxed mb-8">{mod.description}</p>
 
         {/* 꿈 프로젝트 하이라이트 */}
         {mod.showDreamProject && dreamProject && (
-          <div className="mb-6 p-4 bg-[#FCEEE7] rounded-xl border border-[#D97757]/20">
-            <p className="text-xs text-[#9D9087] mb-1">나의 프로젝트</p>
-            <p className="font-semibold text-[#1A1714]">{dreamProject}</p>
+          <div className="mb-8 p-5 bg-[#FCEEE7] rounded-xl border border-[#D97757]/20">
+            <p className="text-sm text-[#9D9087] mb-1">나의 프로젝트</p>
+            <p className="text-lg font-semibold text-[#1A1714]">{dreamProject}</p>
           </div>
         )}
 
         {/* 인사이트 */}
         {mod.insight && (
-          <div className="mb-6 p-4 bg-[#F5F0EB] rounded-xl border-l-4 border-[#D97757]">
-            <p className="text-xs font-semibold text-[#D97757] mb-1">핵심 포인트</p>
-            <p className="text-sm text-[#1A1714] leading-relaxed">{mod.insight}</p>
+          <div className="mb-8 p-5 bg-[#F5F0EB] rounded-xl border-l-4 border-[#D97757]">
+            <p className="text-sm font-semibold text-[#D97757] mb-1">핵심 포인트</p>
+            <p className="text-base text-[#1A1714] leading-relaxed">{mod.insight}</p>
           </div>
         )}
 
         {/* 설치 가이드 */}
         {mod.installGuide && (
-          <div className="mb-6 p-5 bg-white rounded-xl border border-[#E8E0D6]">
-            <p className="font-semibold text-[#1A1714] mb-3">{mod.installGuide.title}</p>
-            <ol className="space-y-2">
+          <div className="mb-8 p-6 bg-white rounded-xl border border-[#E8E0D6]">
+            <p className="text-lg font-semibold text-[#1A1714] mb-4">{mod.installGuide.title}</p>
+            <ol className="space-y-3">
               {mod.installGuide.steps.map((step, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-[#6B6560]">
-                  <span className="w-5 h-5 rounded-full bg-[#FCEEE7] text-[#D97757] flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                <li key={i} className="flex items-start gap-3 text-base text-[#6B6560]">
+                  <span className="w-7 h-7 rounded-full bg-[#FCEEE7] text-[#D97757] flex items-center justify-center flex-shrink-0 text-sm font-bold">
                     {i + 1}
                   </span>
-                  <span>{linkifyText(step)}</span>
+                  <span className="leading-relaxed">{linkifyText(step)}</span>
                 </li>
               ))}
             </ol>
@@ -292,12 +292,12 @@ export default function ModuleContent() {
 
         {/* 비교 테이블 */}
         {mod.comparisonTable && (
-          <div className="mb-6 overflow-x-auto">
-            <table className="w-full text-sm border border-[#E8E0D6] rounded-lg overflow-hidden">
+          <div className="mb-8 overflow-x-auto">
+            <table className="w-full text-base border border-[#E8E0D6] rounded-lg overflow-hidden">
               <thead>
                 <tr className="bg-[#F5F0EB]">
                   {mod.comparisonTable.headers.map((h, i) => (
-                    <th key={i} className="px-3 py-2 text-left text-xs font-semibold text-[#1A1714] border-b border-[#E8E0D6]">{h}</th>
+                    <th key={i} className="px-4 py-3 text-left text-sm font-semibold text-[#1A1714] border-b border-[#E8E0D6]">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -305,7 +305,7 @@ export default function ModuleContent() {
                 {mod.comparisonTable.rows.map((row, i) => (
                   <tr key={i} className="border-b border-[#E8E0D6] last:border-0">
                     {row.map((cell, j) => (
-                      <td key={j} className="px-3 py-2 text-xs text-[#6B6560]">{cell}</td>
+                      <td key={j} className="px-4 py-3 text-sm text-[#6B6560]">{cell}</td>
                     ))}
                   </tr>
                 ))}
@@ -347,7 +347,7 @@ export default function ModuleContent() {
 
         {/* Aha 메시지 */}
         {(isCompleted || showAha) && (
-          <div className="mt-4 p-4 bg-[#E8F5EE] rounded-xl text-[#2D7D52] text-sm font-medium slide-up">
+          <div className="mt-5 p-5 bg-[#E8F5EE] rounded-xl text-[#2D7D52] text-base font-medium slide-up">
             {mod.ahaMessage}
           </div>
         )}
@@ -356,7 +356,7 @@ export default function ModuleContent() {
         {isCompleted && getNextModuleId() && (
           <button
             onClick={goNext}
-            className="mt-6 w-full py-3 bg-[#D97757] text-white rounded-xl font-semibold hover:bg-[#B85C35] transition-colors"
+            className="mt-8 w-full py-4 bg-[#D97757] text-white rounded-xl text-lg font-semibold hover:bg-[#B85C35] transition-colors"
           >
             다음 모듈로 →
           </button>
