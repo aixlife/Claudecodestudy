@@ -154,6 +154,18 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'claude-masterclass-v2',
+      // screen은 저장하지 않음 → 항상 onboarding으로 시작
+      partialize: (state) => ({
+        dreamProject: state.dreamProject,
+        nickname: state.nickname,
+        level: state.level,
+        selectedTrack: state.selectedTrack,
+        currentModuleId: state.currentModuleId,
+        completedModules: state.completedModules,
+        gateResponses: state.gateResponses,
+        startTime: state.startTime,
+        sessionMinutes: state.sessionMinutes,
+      }),
     }
   )
 );
