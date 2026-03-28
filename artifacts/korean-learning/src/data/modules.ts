@@ -456,7 +456,7 @@ export const commonModules: Module[] = [
     description: '"생각의 외주화"를 방지하는 시간이에요. AI가 만든 결과를 무조건 수락하지 말고, 내가 이해하고 판단하고 있는지 체크해요.',
     difficulty: 'practical',
     time: '약 3분',
-    insight: 'AI가 시키는 대로만 하면 당신은 AI의 조수가 돼요. 방향은 항상 내가 정해야 해요.',
+    insight: 'AI가 시키는 대로만 하면 여러분은 AI의 조수가 돼요. 방향은 항상 내가 정해야 해요.',
     thinkFirst: {
       question: '클로드가 제안한 코드를 무조건 수락하면?',
       options: [
@@ -527,7 +527,7 @@ Stripe를 연동해서 월 구독 결제를 받을 수 있게 해줘.
       type: 'confirm',
       prompt: '결제 연동 방법을 이해했나요?',
     },
-    ahaMessage: '이제 당신의 서비스로 수익을 만들 수 있어요!',
+    ahaMessage: '이제 여러분의 서비스로 수익을 만들 수 있어요!',
   },
   {
     id: 'C10',
@@ -596,7 +596,7 @@ Supabase Auth를 사용하고,
       },
     ],
     keywords: [
-      { term: '인증(Authentication)', explanation: '"당신이 정말 당신이 맞는지" 확인하는 과정이에요. 신분증 검사와 같아요.' },
+      { term: '인증(Authentication)', explanation: '"여러분이 정말 여러분이 맞는지" 확인하는 과정이에요. 신분증 검사와 같아요.' },
       { term: '소셜 로그인', explanation: '구글, 카카오 계정으로 한 번에 로그인하는 기능이에요. 별도 회원가입 없이 기존 계정을 그대로 써요.' },
     ],
     gate: {
