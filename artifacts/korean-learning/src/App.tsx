@@ -19,7 +19,9 @@ export default function App() {
       seq.every((id) => completedModules.includes(id)) &&
       screen === 'learning'
     ) {
-      goToScreen('completion');
+      // Aha 메시지를 충분히 보여준 후 completion으로 전환
+      const timer = setTimeout(() => goToScreen('completion'), 2500);
+      return () => clearTimeout(timer);
     }
   }, [completedModules.length]);
 
