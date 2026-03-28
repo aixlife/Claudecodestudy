@@ -161,7 +161,7 @@ export default function Onboarding() {
         <div className="mb-10 max-w-[500px]">
           <p style={{ color: '#6B6560', fontSize: '1.1rem', lineHeight: 1.6, fontWeight: 500 }}>
             우주를 항해하듯 새로운 차원의 코딩 학습을 경험하세요.<br />
-            당신의 상상력이 현실의 뉴런처럼 연결되어<br />
+            여러분의 상상력이 현실의 뉴런처럼 연결되어<br />
             실제 동작하는 프로그램으로 탄생합니다.
           </p>
         </div>

@@ -5,6 +5,25 @@ import GateSystem from './GateSystem';
 import Footer from './Footer';
 import type { Module, CodeBlock, Keyword } from '../data/types';
 
+// URL을 클릭 가능한 링크로 변환
+function linkifyText(text: string) {
+  const urlRegex = /(https?:\/\/[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,}\/[^\s]*|claude\.ai\/[^\s]*)/g;
+  const parts = text.split(urlRegex);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) => {
+    if (urlRegex.test(part)) {
+      urlRegex.lastIndex = 0;
+      const href = part.startsWith('http') ? part : `https://${part}`;
+      return (
+        <a key={i} href={href} target="_blank" rel="noopener noreferrer" className="text-[#D97757] underline hover:text-[#B85C35] transition-colors">
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+}
+
 // 코드 블록 컴포넌트
 function CodeBlockView({ block }: { block: CodeBlock }) {
   const [copied, setCopied] = useState(false);
@@ -261,7 +280,7 @@ export default function ModuleContent() {
                   <span className="w-5 h-5 rounded-full bg-[#FCEEE7] text-[#D97757] flex items-center justify-center flex-shrink-0 text-xs font-bold">
                     {i + 1}
                   </span>
-                  <span>{step}</span>
+                  <span>{linkifyText(step)}</span>
                 </li>
               ))}
             </ol>
