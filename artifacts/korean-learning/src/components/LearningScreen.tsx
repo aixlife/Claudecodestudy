@@ -61,10 +61,15 @@ export default function LearningScreen() {
             <span className="text-sm text-[#9D9087] flex-shrink-0">
               {completedCount}/{seq.length}
             </span>
-            {isConnected && activeCount > 0 && (
+            {isConnected ? (
               <span className="inline-flex items-center text-sm text-[#2D7D52] font-medium flex-shrink-0">
                 <span className="inline-block w-2 h-2 rounded-full bg-[#2D7D52] mr-1.5 animate-pulse" />
                 {activeCount}명 학습 중
+              </span>
+            ) : (
+              <span className="inline-flex items-center text-sm text-[#9D9087] flex-shrink-0">
+                <span className="inline-block w-2 h-2 rounded-full bg-[#9D9087] mr-1.5" />
+                연결 중...
               </span>
             )}
           </div>
@@ -94,10 +99,15 @@ export default function LearningScreen() {
           <div className="flex items-center justify-between text-xs text-[#9D9087] mb-1">
             <span>{completedCount}/{seq.length} 완료</span>
             <div className="flex items-center gap-2">
-              {isConnected && activeCount > 0 && (
+              {isConnected ? (
                 <span className="text-[#2D7D52] font-medium">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#2D7D52] mr-0.5 animate-pulse" />
                   {activeCount}명
+                </span>
+              ) : (
+                <span className="text-[#9D9087]">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#9D9087] mr-0.5" />
+                  ...
                 </span>
               )}
               <span>{Math.round(progress)}%</span>
