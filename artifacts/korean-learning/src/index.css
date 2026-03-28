@@ -59,8 +59,8 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 22px;
+    line-height: 1.7;
   }
 }
 
@@ -153,10 +153,10 @@
   background: #1C1917;
   color: #E8E0D6;
   font-family: var(--app-font-mono);
-  font-size: 13px;
-  line-height: 1.7;
-  border-radius: 12px;
-  padding: 20px;
+  font-size: 18px;
+  line-height: 1.8;
+  border-radius: 14px;
+  padding: 24px;
   position: relative;
   overflow: auto;
   white-space: pre-wrap;

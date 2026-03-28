@@ -34,17 +34,17 @@ export default function TrackSelection() {
         <div className="max-w-[900px] w-full">
           {/* 꿈 프로젝트 리마인드 */}
           {dreamProject && (
-            <div className="mb-8 p-4 bg-[#FCEEE7] rounded-xl border border-[#D97757]/20">
-              <p className="text-sm text-[#6B6560]">나의 프로젝트</p>
-              <p className="font-semibold text-[#1A1714] mt-1">{dreamProject}</p>
+            <div className="mb-10 p-5 bg-[#FCEEE7] rounded-xl border border-[#D97757]/20">
+              <p className="text-base text-[#6B6560]">나의 프로젝트</p>
+              <p className="text-lg font-semibold text-[#1A1714] mt-1">{dreamProject}</p>
             </div>
           )}
 
           {/* 트랙 선택 안내 */}
-          <h1 className="text-2xl md:text-3xl font-bold text-[#1A1714] mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#1A1714] mb-3">
             어떤 것을 만들고 싶으세요?
           </h1>
-          <p className="text-[#6B6560] mb-8 text-lg">
+          <p className="text-[#6B6560] mb-10 text-xl">
             트랙을 선택하면 필요한 모듈이 자동으로 구성돼요. 모든 트랙은 <span className="font-semibold text-[#D97757]">무료</span>예요.
           </p>
 
@@ -56,33 +56,33 @@ export default function TrackSelection() {
                 onClick={() => handleSelectTrack(track.id)}
                 className="group text-left p-6 bg-white rounded-2xl border-2 border-[#E8E0D6] hover:border-[#D97757] transition-all duration-200 hover:shadow-lg hover:shadow-[#D97757]/10"
               >
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-3 mb-4">
                   <div>
-                    <h3 className="font-bold text-lg text-[#1A1714] group-hover:text-[#D97757] transition-colors">
+                    <h3 className="font-bold text-xl text-[#1A1714] group-hover:text-[#D97757] transition-colors">
                       {track.title}
                     </h3>
-                    <p className="text-sm text-[#9D9087]">{track.subtitle}</p>
+                    <p className="text-base text-[#9D9087]">{track.subtitle}</p>
                   </div>
                 </div>
 
-                <p className="text-[#6B6560] text-sm mb-4 leading-relaxed">
+                <p className="text-[#6B6560] text-base mb-5 leading-relaxed">
                   {track.description}
                 </p>
 
                 {/* 후킹 카피 */}
-                <div className="p-3 bg-[#F5F0EB] rounded-lg">
-                  <p className="text-sm text-[#1A1714] font-medium italic">
+                <div className="p-4 bg-[#F5F0EB] rounded-lg">
+                  <p className="text-base text-[#1A1714] font-medium italic">
                     "{track.hookCopy.entry}"
                   </p>
                 </div>
 
                 {/* 모듈 수 */}
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="text-xs text-[#9D9087]">
+                <div className="mt-5 flex items-center justify-between">
+                  <span className="text-sm text-[#9D9087]">
                     {track.moduleSequence.length}개 모듈
                   </span>
                   <span
-                    className="text-xs font-semibold px-2 py-1 rounded-full"
+                    className="text-sm font-semibold px-3 py-1.5 rounded-full"
                     style={{ backgroundColor: track.color + '15', color: track.color }}
                   >
                     시작하기 →
@@ -93,7 +93,7 @@ export default function TrackSelection() {
           </div>
 
           {/* 하단 안내 */}
-          <p className="text-center text-sm text-[#9D9087] mt-8 mb-8">
+          <p className="text-center text-base text-[#9D9087] mt-10 mb-10">
             트랙은 나중에 변경할 수 있어요. 일단 끌리는 걸로 시작해보세요!
           </p>
           <Footer />

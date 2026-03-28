@@ -19,34 +19,34 @@ export default function Sidebar() {
   const completedCount = seq.filter((id) => completedModules.includes(id)).length;
 
   return (
-    <aside className="w-[280px] h-screen overflow-y-auto flex-shrink-0 hidden md:flex flex-col bg-white border-r border-[#E8E0D6]">
+    <aside className="w-[320px] h-screen overflow-y-auto flex-shrink-0 hidden md:flex flex-col bg-white border-r border-[#E8E0D6]">
       {/* 로고 */}
-      <div className="p-4 border-b border-[#E8E0D6]">
+      <div className="p-5 border-b border-[#E8E0D6]">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-sm text-[#D97757] uppercase tracking-tight">Claude Code Study</span>
+          <span className="font-bold text-base text-[#D97757] uppercase tracking-tight">Claude Code Study</span>
         </div>
       </div>
 
       {/* 트랙 정보 */}
-      <div className="p-4 border-b border-[#E8E0D6]">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="font-semibold text-sm" style={{ color: track.color }}>{track.title}</span>
+      <div className="p-5 border-b border-[#E8E0D6]">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="font-semibold text-base" style={{ color: track.color }}>{track.title}</span>
         </div>
         {dreamProject && (
-          <div className="p-2.5 bg-[#FCEEE7] rounded-lg">
-            <p className="text-[10px] text-[#9D9087] mb-0.5">나의 프로젝트</p>
-            <p className="text-xs text-[#1A1714] font-medium leading-snug">{dreamProject}</p>
+          <div className="p-3 bg-[#FCEEE7] rounded-lg">
+            <p className="text-xs text-[#9D9087] mb-1">나의 프로젝트</p>
+            <p className="text-sm text-[#1A1714] font-medium leading-snug">{dreamProject}</p>
           </div>
         )}
       </div>
 
       {/* 진행 상태 */}
-      <div className="px-4 py-3 border-b border-[#E8E0D6]">
-        <div className="flex items-center justify-between text-xs text-[#6B6560]">
+      <div className="px-5 py-4 border-b border-[#E8E0D6]">
+        <div className="flex items-center justify-between text-sm text-[#6B6560]">
           <span>{completedCount}/{seq.length} 완료</span>
           <span>{sessionMinutes}분 학습</span>
         </div>
-        <div className="mt-2 h-1.5 bg-[#F5F0EB] rounded-full overflow-hidden">
+        <div className="mt-2.5 h-2 bg-[#F5F0EB] rounded-full overflow-hidden">
           <div
             className="h-full bg-[#D97757] rounded-full transition-all duration-500"
             style={{ width: `${seq.length > 0 ? (completedCount / seq.length) * 100 : 0}%` }}
@@ -55,8 +55,8 @@ export default function Sidebar() {
       </div>
 
       {/* 모듈 목록 */}
-      <div className="flex-1 overflow-y-auto p-3">
-        <div className="space-y-1">
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="space-y-1.5">
           {seq.map((moduleId, idx) => {
             const mod = resolveModule(moduleId);
             const isCompleted = completedModules.includes(moduleId);
@@ -68,7 +68,7 @@ export default function Sidebar() {
                 key={moduleId}
                 onClick={() => accessible && setCurrentModule(moduleId)}
                 disabled={!accessible}
-                className={`w-full text-left p-2.5 rounded-lg flex items-start gap-2.5 transition-all duration-150 ${
+                className={`w-full text-left p-3 rounded-lg flex items-start gap-3 transition-all duration-150 ${
                   isCurrent
                     ? 'bg-[#FCEEE7] border border-[#D97757]/30'
                     : accessible
@@ -77,7 +77,7 @@ export default function Sidebar() {
                 }`}
               >
                 {/* 노드 아이콘 */}
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold ${
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold ${
                   isCompleted
                     ? 'bg-[#2D7D52] text-white'
                     : isCurrent
@@ -89,13 +89,13 @@ export default function Sidebar() {
 
                 {/* 모듈 정보 */}
                 <div className="flex-1 min-w-0">
-                  <p className={`text-xs font-medium truncate ${
+                  <p className={`text-sm font-medium truncate ${
                     isCurrent ? 'text-[#D97757]' : 'text-[#1A1714]'
                   }`}>
                     {mod?.title || moduleId}
                   </p>
                   {mod?.metaphor && (
-                    <p className="text-[10px] text-[#9D9087] truncate mt-0.5">
+                    <p className="text-xs text-[#9D9087] truncate mt-0.5">
                       {mod.metaphor}
                     </p>
                   )}
@@ -107,7 +107,7 @@ export default function Sidebar() {
 
         {/* 완료 표시 */}
         {completedCount === seq.length && seq.length > 0 && (
-          <div className="text-center mt-4 text-[#D97757] font-semibold">Done</div>
+          <div className="text-center mt-5 text-[#D97757] text-base font-semibold">Done</div>
         )}
       </div>
     </aside>

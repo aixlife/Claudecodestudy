@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="w-full py-6 flex flex-col items-center justify-center text-sm gap-1 bg-transparent">
+    <div className="w-full py-8 flex flex-col items-center justify-center text-base gap-1.5 bg-transparent">
       <a 
         href="https://aixlife.co.kr" 
         target="_blank" 
