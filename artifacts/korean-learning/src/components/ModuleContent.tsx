@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAppStore, resolveModule } from '../store/useAppStore';
 import { getTrack } from '../data/tracks';
 import GateSystem from './GateSystem';
+import PromptBuilder from './PromptBuilder';
 import Footer from './Footer';
 import type { Module, CodeBlock, Keyword } from '../data/types';
 
@@ -442,6 +443,14 @@ export default function ModuleContent() {
             onSaveResponse={saveGateResponse}
           />
         </ScrollSection>
+
+        {/* C4 완료 후 프롬프트 빌더 표시 (학습 중간에 실습 유도) */}
+        {currentModuleId === 'C4' && isCompleted && (
+          <ScrollSection delay={100}>
+            <SectionDivider />
+            <PromptBuilder />
+          </ScrollSection>
+        )}
 
         {/* Aha 메시지 */}
         {(isCompleted || showAha) && (
