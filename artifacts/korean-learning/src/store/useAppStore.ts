@@ -35,6 +35,7 @@ interface AppState {
   startSession: () => void;
   incrementSessionMinutes: () => void;
   reset: () => void;
+  switchTrack: () => void;
 
   // 파생 (getter 느낌의 헬퍼)
   getModuleSequence: () => string[];
@@ -70,9 +71,14 @@ export const useAppStore = create<AppState>()(
       selectTrack: (trackId) => {
         const track = getTrack(trackId);
         if (!track) return;
+        const { completedModules } = get();
+        // 이미 완료한 모듈을 건너뛰고 첫 미완료 모듈로 이동
+        const firstIncomplete = track.moduleSequence.find(
+          (id) => !completedModules.includes(id)
+        );
         set({
           selectedTrack: trackId,
-          currentModuleId: track.moduleSequence[0] || 'C0',
+          currentModuleId: firstIncomplete || track.moduleSequence[0] || 'C0',
           screen: 'learning',
         });
       },
@@ -126,6 +132,21 @@ export const useAppStore = create<AppState>()(
           startTime: null,
           sessionMinutes: 0,
         }),
+
+      // 트랙만 변경 (닉네임/레벨/공통모듈 완료 유지)
+      switchTrack: () => {
+        const { completedModules, completedTracks, selectedTrack } = get();
+        // 현재 트랙을 completedTracks에 추가
+        const newCompletedTracks = selectedTrack && !completedTracks.includes(selectedTrack)
+          ? [...completedTracks, selectedTrack]
+          : completedTracks;
+        set({
+          selectedTrack: null,
+          currentModuleId: 'C0',
+          completedTracks: newCompletedTracks,
+          // completedModules 유지 — 공통 모듈(C0~C8.5) 완료 이월됨
+        });
+      },
 
       // 헬퍼
       getModuleSequence: () => {

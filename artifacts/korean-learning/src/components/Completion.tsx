@@ -8,8 +8,9 @@ export default function Completion() {
   const selectedTrack = useAppStore((s) => s.selectedTrack);
   const completedModules = useAppStore((s) => s.completedModules);
   const sessionMinutes = useAppStore((s) => s.sessionMinutes);
-  const reset = useAppStore((s) => s.reset);
+  const switchTrack = useAppStore((s) => s.switchTrack);
   const goToScreen = useAppStore((s) => s.goToScreen);
+  const completedTracks = useAppStore((s) => s.completedTracks);
 
   const track = selectedTrack ? getTrack(selectedTrack) : null;
 
@@ -127,7 +128,7 @@ export default function Completion() {
         {/* 다른 트랙 도전 */}
         <div className="text-center mb-12">
           <button
-            onClick={() => { reset(); goToScreen('track-selection'); }}
+            onClick={() => { switchTrack(); goToScreen('track-selection'); }}
             className="px-6 py-2.5 rounded-full border border-[#E8E0D6] text-sm text-[#6B6560] hover:border-[#D97757] hover:text-[#D97757] transition-colors"
           >
             다른 트랙으로 도전하기
