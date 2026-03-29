@@ -231,7 +231,10 @@ export default function ModuleContent() {
     if (nextId) setCurrentModule(nextId);
   };
 
-  // 모듈 변경 시 상태 리셋 + 자동이동 타이머 취소
+  // 스크롤 컨테이너 ref
+  const contentScrollRef = useRef<HTMLDivElement>(null);
+
+  // 모듈 변경 시 상태 리셋 + 스크롤 상단 + 자동이동 타이머 취소
   useEffect(() => {
     setShowAha(false);
     setShowConfetti(false);
@@ -239,6 +242,8 @@ export default function ModuleContent() {
       clearTimeout(autoAdvanceRef.current);
       autoAdvanceRef.current = null;
     }
+    // 모듈 전환 시 스크롤을 맨 위로
+    contentScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentModuleId]);
 
   if (!mod) {
@@ -260,7 +265,7 @@ export default function ModuleContent() {
   const nextSection = () => ++sectionNum;
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div ref={contentScrollRef} className="flex-1 overflow-y-auto">
       {/* Confetti */}
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-50">
