@@ -430,6 +430,7 @@ export default function ModuleContent() {
         {/* ===== 게이트 시스템 ===== */}
         <ScrollSection delay={100}>
           <GateSystem
+            key={currentModuleId}
             gate={mod.gate}
             moduleId={currentModuleId}
             isCompleted={isCompleted}
