@@ -415,16 +415,6 @@ export default function ModuleContent() {
           <ScrollSection delay={80}>
             <SectionDivider />
             <KeywordsSection keywords={mod.keywords} />
-            <div className="mt-4 text-right">
-              <a
-                href="https://www.perplexity.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block text-sm text-[#9D9087] hover:text-[#D97757] transition-colors underline"
-              >
-                여기 없는 용어, 스스로 찾아보기 →
-              </a>
-            </div>
           </ScrollSection>
         )}
 
